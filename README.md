@@ -17,7 +17,7 @@ https://repmyblock.nyc/ny_politic_education
 Theo Chino<BR>
 https://youtu.be/WXRd6lF3Ix4<BR>
   
-# The most last meeting in Manhattan.
+# The last meeting in Manhattan (2019).
 This is how the meeting goes around in about 3000 counties around the United States. This meeting happened in Richmond County or Staten Island. Everyone was pissed at the county chair that he decided not to appear and resign but the remplacement is a Lawmaker.<BR>
 https://forum.repmyblock.nyc/t/2019-richmond-county-committee/201
 

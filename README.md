@@ -16,6 +16,21 @@ https://repmyblock.nyc/ny_politic_education
 
 Theo Chino<BR>
 https://youtu.be/WXRd6lF3Ix4<BR>
+  
+# The most last meeting in Manhattan.
+This is how the meeting goes around in about 3000 counties around the United States. This meeting happened in Richmond County or Staten Island. Everyone was pissed at the county chair that he decided not to appear and resign but the remplacement is a Lawmaker.<BR>
+https://forum.repmyblock.nyc/t/2019-richmond-county-committee/201
+
+This is how the meeting went in New York County or Manhattan. A lot of drama.
+First, those elected in 2019 were told they would not be able to select the leadership:<BR>
+https://www.gothamgazette.com/opinion/8825-manhattan-democratic-primary-voters-just-elected-new-party-reps-county-committee-voices-unheard
+
+Second, it went to court and a judge said the new elected people would be able to select the leadership:<BR>
+https://twitter.com/VittoriaNYC/status/1179510718888103941?s=20
+  
+And this is how the meeting ended up organised.<BR>
+http://www.newyorktrue.com/photo-gallery-manhattan-dems-organize/
+
 
 # Technology
 

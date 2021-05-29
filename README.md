@@ -1,7 +1,7 @@
 # RepMyBlock
 Website to put an end to the Society of St. Tammany in New York City.
 
-If you know or wish to learn PHP, HTML, CSS, Swift and start developing, go to the Wiki of the Dev Setup on how to configure the Virtual Machine environment. https://github.com/repmyblock/devsetup/wiki
+If you know or wish to learn PHP, HTML, CSS, Swift, and start developing, go to the Wiki of the Dev Setup on how to configure the Virtual Machine environment. https://github.com/repmyblock/devsetup/wiki
 
 
 # History.
@@ -28,7 +28,7 @@ https://www.youtube.com/channel/UCAJC7aGMPoVbPPBD1gvGb9g
 * https://dsa-la.org/committees/elpol/adems2021
 * https://repyourblock2020.org
 
-A photo galery of the 2019 Manhattan Meeting.<BR>
+A photo gallery of the 2019 Manhattan Meeting.<BR>
 http://www.newyorktrue.com/photo-gallery-manhattan-dems-organize/
 
 

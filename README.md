@@ -1,7 +1,7 @@
 # RepMyBlock
 Website to put an end to the Society of St. Tammany in New York City.
 
-To get started and if you want to get started develloping, go to the Wiki of the Dev Setup on how to configure the Virtual Machine environment.https://github.com/repmyblock/devsetup/wiki
+To get started and if you want to get started develloping, go to the Wiki of the Dev Setup on how to configure the Virtual Machine environment. https://github.com/repmyblock/devsetup/wiki
 
 
 # History.

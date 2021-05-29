@@ -5,15 +5,15 @@ If you know or wish to learn PHP, HTML, CSS, Swift and start developing, go to t
 
 
 # History.
-Below is just an historical rambling for non technical folks to understand what we are trying to accomplish. In short, we want to remove money from politics lowering the cost of entry to almost zero.
+Below is just historical rambling for non-technical folks to understand what we are trying to accomplish. In short, we want to remove money from politics lowering the cost of entry to almost zero.
 
-Great history: https://en.wikipedia.org/wiki/Tammany_Hall<BR>
+Great historical explanation: https://en.wikipedia.org/wiki/Tammany_Hall<BR>
 Martin Scorsese made a movie that illustrated the power of the Society of St. Tammany while everyone was fighting: https://youtu.be/NUco72Sxokk
 
-200 years laters, we are still fighting while the party bosses pick candidates.<BR> 
+Two hundred years later, we are still fighting while the party bosses pick candidates.<BR> 
 https://www.nytimes.com/2017/09/18/nyregion/new-york-politics-party-bosses.html
 
-I am one of them and I don't like it, so this code is about breaking Aaron Burr shenanigans.<BR>
+I am one of them, and I wouldn't say I like it, so this code is about breaking Aaron Burr's shenanigans.<BR>
 https://repmyblock.nyc/ny_politic_education
   
 
@@ -21,18 +21,14 @@ https://repmyblock.nyc/ny_politic_education
 Theo Chino<BR>
 https://youtu.be/WXRd6lF3Ix4<BR>
   
-# The last meeting in Manhattan (2019).
-This is how the meeting goes around in about 3000 counties around the United States. This meeting happened in Richmond County or Staten Island. Everyone was pissed at the county chair that he decided not to appear and resign but the remplacement is a Lawmaker.<BR>
-https://forum.repmyblock.nyc/t/2019-richmond-county-committee/201
+# Links to various explainers around the country.
+This is how the meeting goes around in about 3000 counties around the United States.<BR>
+https://www.youtube.com/channel/UCAJC7aGMPoVbPPBD1gvGb9g
 
-This is how the meeting went in New York County or Manhattan. A lot of drama.
-First, those elected in 2019 were told they would not be able to select the leadership:<BR>
-https://www.gothamgazette.com/opinion/8825-manhattan-democratic-primary-voters-just-elected-new-party-reps-county-committee-voices-unheard
+* https://dsa-la.org/committees/elpol/adems2021
+* https://repyourblock2020.org
 
-Second, it went to court and a judge said the new elected people would be able to select the leadership:<BR>
-https://twitter.com/VittoriaNYC/status/1179510718888103941?s=20
-  
-And this is how the meeting ended up organised.<BR>
+A photo galery of the 2019 Manhattan Meeting.<BR>
 http://www.newyorktrue.com/photo-gallery-manhattan-dems-organize/
 
 

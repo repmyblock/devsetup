@@ -1,11 +1,11 @@
 # RepMyBlock
 Website to put an end to the Society of St. Tammany in New York City.
 
-To get started and if you want to get started develloping, go to the Wiki of the Dev Setup on how to configure the Virtual Machine environment. https://github.com/repmyblock/devsetup/wiki
+If you know or wish to learn PHP, HTML, CSS, Swift and start developing, go to the Wiki of the Dev Setup on how to configure the Virtual Machine environment. https://github.com/repmyblock/devsetup/wiki
 
 
 # History.
-Below is just an historical rambling of what we are trying to change.
+Below is just an historical rambling for non technical folks to understand what we are trying to accomplish. In short, we want to remove money from politics lowering the cost of entry to almost zero.
 
 Great history: https://en.wikipedia.org/wiki/Tammany_Hall<BR>
 Martin Scorsese made a movie that illustrated the power of the Society of St. Tammany while everyone was fighting: https://youtu.be/NUco72Sxokk

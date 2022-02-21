@@ -11,7 +11,7 @@
 	// Perform query
 	if ($result = $mysqli -> query($sql)) {
 		while($row = mysqli_fetch_row($result)) {
-			echo "<A HREF=\"https://dev-frontend-web.repmyblock.org/ml" . $row[3] . 
+			echo "<A HREF=\"https://dev-repmyblock.repmyblock.org/ml" . $row[3] . 
 											"/exp/register/intake\" TARGET=\"DEVREP\">" . $row[1] . "</A> - " . 
 											$row[7] . " - Concluded: " . $row[5] . "<BR>\n";
 		}

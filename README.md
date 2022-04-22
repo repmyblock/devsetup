@@ -7,6 +7,8 @@ If you know or wish to learn PHP, HTML, CSS, Swift, and start developing, go to 
 # History.
 Below is just historical rambling for non-technical folks to understand what we are trying to accomplish. In short, we want to remove money from politics lowering the cost of entry to almost zero.
 
+This is a video explaining the problem: https://youtu.be/KU8-lHctud8
+
 Great historical explanation: https://en.wikipedia.org/wiki/Tammany_Hall<BR>
 Martin Scorsese made a movie that illustrated the power of the Society of St. Tammany while everyone was fighting: https://youtu.be/NUco72Sxokk
 
@@ -19,7 +21,7 @@ https://repmyblock.nyc/ny_politic_education
 
 
 Theo Chino<BR>
-https://youtu.be/WXRd6lF3Ix4<BR>
+<BR>
   
 # Links to various explainers around the country.
 This is how the meeting goes around in about 3000 counties around the United States.<BR>

@@ -30,7 +30,7 @@ close ($fh);
 $PHPFileContent .= "\t\"\";\n\n";
 $PHPFileContent .= "?>\n";
 
-my @Paths = qw|/home/usracct/statlibs/pdf/SSLKeys /home/usracct/statlibs/www/SSLKeys|;
+my @Paths = qw|/home/usracct/statlib/pdf/SSLKeys /home/usracct/statlib/www/SSLKeys|;
 
 foreach ( @Paths ) {
 	my $filename = $_ . "/SSLInsideKey.php";

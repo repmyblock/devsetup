@@ -33,6 +33,7 @@ $PHPFileContent .= "?>\n";
 my @Paths = qw|/home/usracct/statlib/pdf/SSLKeys /home/usracct/statlib/www/SSLKeys|;
 
 foreach ( @Paths ) {
+	mkdir $_;
 	my $filename = $_ . "/SSLInsideKey.php";
 	open(my $fh, '>', $filename) or die "Could not open file '$filename' $!";
 	print $fh $PHPFileContent

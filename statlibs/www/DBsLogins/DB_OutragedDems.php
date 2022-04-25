@@ -1,5 +1,5 @@
 <?php
-$databasename = "NYSVoters";
+$databasename = "RepMyBlock";
 $databaseserver = "localhost";
 $databaseuser = "usracct";
 $databasepassword = "";

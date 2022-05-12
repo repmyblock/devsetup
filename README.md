@@ -8,9 +8,6 @@ If you know or wish to learn PHP, HTML, CSS, Swift, and start developing, go to 
 Below is just historical rambling for non-technical folks to understand what we are trying to accomplish. In short, we want to remove money from politics lowering the cost of entry to almost zero.
 
 This is a video explaining the problem: https://youtu.be/KU8-lHctud8
-
-Theo Chino<BR>
-<BR>
   
 # Links to various explainers around the country.
 This is how the meeting goes around in about 3000 counties around the United States.<BR>

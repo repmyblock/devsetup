@@ -9,17 +9,6 @@ Below is just historical rambling for non-technical folks to understand what we 
 
 This is a video explaining the problem: https://youtu.be/KU8-lHctud8
 
-Great historical explanation: https://en.wikipedia.org/wiki/Tammany_Hall<BR>
-Martin Scorsese made a movie that illustrated the power of the Society of St. Tammany while everyone was fighting: https://youtu.be/NUco72Sxokk
-
-Two hundred years later, we are still fighting while the party bosses pick candidates.<BR> 
-https://www.nytimes.com/2017/09/18/nyregion/new-york-politics-party-bosses.html
-
-I am one of them, and I wouldn't say I like it, so this code is about breaking Aaron Burr's shenanigans.<BR>
-https://repmyblock.nyc/ny_politic_education
-  
-
-
 Theo Chino<BR>
 <BR>
   
@@ -37,6 +26,5 @@ http://www.newyorktrue.com/photo-gallery-manhattan-dems-organize/
 # Technology
 
 This is built using OpenData, and as much as possible Open Source and Free (as Freedom) Software.
-
 https://github.com/osmlab/nycbuildings
 

@@ -1,8 +1,8 @@
--- MySQL dump 10.13  Distrib 8.0.28, for Linux (x86_64)
+-- MySQL dump 10.13  Distrib 8.0.46, for Linux (x86_64)
 --
 -- Host: localhost    Database: RepMyBlock
 -- ------------------------------------------------------
--- Server version	8.0.28-0ubuntu0.20.04.3
+-- Server version	8.0.46-0ubuntu0.24.04.3
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -29,7 +29,61 @@ CREATE TABLE `AdminCode` (
   `AdminCode_ProgName` varchar(256) DEFAULT NULL,
   PRIMARY KEY (`AdminCode_ID`),
   KEY `SystemUserVoterUniqID_IDX` (`AdminCode_Code`)
-) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `AdminNotif`
+--
+
+DROP TABLE IF EXISTS `AdminNotif`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `AdminNotif` (
+  `AdminNotif_ID` int unsigned NOT NULL AUTO_INCREMENT,
+  `SystemUser_ID` int unsigned DEFAULT NULL,
+  `Team_ID` int unsigned DEFAULT NULL,
+  `AdminNotif_PrivA` int unsigned DEFAULT NULL,
+  PRIMARY KEY (`AdminNotif_ID`),
+  UNIQUE KEY `SystemUser_ID` (`SystemUser_ID`,`Team_ID`)
+) ENGINE=InnoDB AUTO_INCREMENT=69 DEFAULT CHARSET=latin1 ROW_FORMAT=COMPRESSED KEY_BLOCK_SIZE=8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `AdminNotifList`
+--
+
+DROP TABLE IF EXISTS `AdminNotifList`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `AdminNotifList` (
+  `AdminNotifList_ID` int unsigned NOT NULL AUTO_INCREMENT,
+  `AdminNotifList_Priv` char(1) DEFAULT NULL,
+  `AdminNotifList_PrivNum` int unsigned DEFAULT NULL,
+  `SystemUser_Priv` int unsigned DEFAULT NULL,
+  `AdminNotifList_Description` varchar(256) DEFAULT NULL,
+  PRIMARY KEY (`AdminNotifList_ID`)
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `BadgeVerif`
+--
+
+DROP TABLE IF EXISTS `BadgeVerif`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `BadgeVerif` (
+  `BadgeVerif_ID` int unsigned NOT NULL AUTO_INCREMENT,
+  `BadgeVerif_Code` char(20) DEFAULT NULL,
+  `BadgeVerif_Reason` varchar(256) DEFAULT NULL,
+  `BadgeVerif_Active` enum('yes','no') DEFAULT NULL,
+  `BadgeVerif_ActiveFrom` datetime DEFAULT NULL,
+  `BadgeVerif_ActiveTo` datetime DEFAULT NULL,
+  `BadgeVerif_Picture` mediumblob,
+  PRIMARY KEY (`BadgeVerif_ID`),
+  KEY `BadgeVerif_Code_IDX` (`BadgeVerif_Code`)
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -43,11 +97,10 @@ CREATE TABLE `Candidate` (
   `Candidate_ID` int unsigned NOT NULL AUTO_INCREMENT,
   `SystemUser_ID` int unsigned DEFAULT NULL,
   `Team_ID` int unsigned DEFAULT NULL,
-  `CandidateProfile_ID` int unsigned DEFAULT NULL,
   `Candidate_PetitionNameset` varchar(256) DEFAULT NULL,
   `Candidate_UniqStateVoterID` char(20) DEFAULT NULL,
   `DataCounty_ID` int unsigned DEFAULT NULL,
-  `Voter_ID` int unsigned DEFAULT NULL,
+  `Voters_ID` int unsigned DEFAULT NULL,
   `CandidateElection_ID` int unsigned DEFAULT NULL,
   `Candidate_Party` char(3) DEFAULT NULL,
   `Candidate_FullPartyName` varchar(50) DEFAULT NULL,
@@ -57,15 +110,19 @@ CREATE TABLE `Candidate` (
   `Candidate_DispResidence` varchar(256) DEFAULT NULL,
   `CandidateElection_DBTable` varchar(256) DEFAULT NULL,
   `CandidateElection_DBTableValue` varchar(256) DEFAULT NULL,
+  `DataDistrictTown_ID` int unsigned DEFAULT NULL,
   `Candidate_StatsVoters` int DEFAULT NULL,
   `Candidate_Status` enum('published','pending','verified','nominated','deleted') DEFAULT NULL,
   `Candidate_Watermark` enum('yes','no') DEFAULT 'yes',
   `Candidate_LocalHash` char(32) DEFAULT NULL,
   `Candidate_NominatedBy` int unsigned DEFAULT NULL,
+  `Candidate_LastModified` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`Candidate_ID`),
   KEY `SystemUser_ID_IDX` (`SystemUser_ID`),
-  KEY `Candidate_UniqStateVoterID_IDX` (`Candidate_UniqStateVoterID`)
-) ENGINE=InnoDB AUTO_INCREMENT=133 DEFAULT CHARSET=latin1 ROW_FORMAT=COMPRESSED KEY_BLOCK_SIZE=8;
+  KEY `Candidate_UniqStateVoterID_IDX` (`Candidate_UniqStateVoterID`),
+  KEY `Candidate_Voters_IDX` (`Voters_ID`),
+  KEY `CandidateElection_Candidate_ID_IDX` (`CandidateElection_ID`)
+) ENGINE=InnoDB AUTO_INCREMENT=14961 DEFAULT CHARSET=latin1 ROW_FORMAT=COMPRESSED KEY_BLOCK_SIZE=8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -81,7 +138,7 @@ CREATE TABLE `CandidateComRplce` (
   `CandidateComRplce_FullName` varchar(256) DEFAULT NULL,
   `CandidateComRplce_Residence` varchar(256) DEFAULT NULL,
   PRIMARY KEY (`CandidateComRplce_ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=27 DEFAULT CHARSET=latin1 ROW_FORMAT=COMPRESSED KEY_BLOCK_SIZE=8;
+) ENGINE=InnoDB AUTO_INCREMENT=74 DEFAULT CHARSET=latin1 ROW_FORMAT=COMPRESSED KEY_BLOCK_SIZE=8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -99,7 +156,7 @@ CREATE TABLE `CandidateComRplceSet` (
   PRIMARY KEY (`CandidateComRplceSet_ID`),
   KEY `CandidateComRplceID_IDX` (`CandidateComRplce_ID`),
   KEY `CandidateComRplceCandidate_ID_IDX` (`Candidate_ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=71 DEFAULT CHARSET=latin1 ROW_FORMAT=COMPRESSED KEY_BLOCK_SIZE=8;
+) ENGINE=InnoDB AUTO_INCREMENT=140 DEFAULT CHARSET=latin1 ROW_FORMAT=COMPRESSED KEY_BLOCK_SIZE=8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -112,20 +169,28 @@ DROP TABLE IF EXISTS `CandidateElection`;
 CREATE TABLE `CandidateElection` (
   `CandidateElection_ID` int unsigned NOT NULL AUTO_INCREMENT,
   `Elections_ID` int unsigned DEFAULT NULL,
-  `CandidateElection_PositionType` enum('party','electoral') DEFAULT NULL,
+  `ElectionsPosition_ID` int unsigned DEFAULT NULL,
+  `CandidateElection_PositionType` enum('party','electoral','tobedetermined') DEFAULT NULL,
   `CandidateElection_Party` char(3) DEFAULT NULL,
+  `CandidateElection_PartisanType` enum('closed','open','mixed','coalition','other') DEFAULT NULL,
   `CandidateElection_Text` varchar(256) DEFAULT NULL,
   `CandidateElection_PetitionText` varchar(256) DEFAULT NULL,
   `CandidateElection_URLExplain` varchar(256) DEFAULT NULL,
   `CandidateElection_Number` smallint DEFAULT '1',
   `CandidateElection_DisplayOrder` smallint DEFAULT NULL,
+  `CandidateElection_SignDeadline` datetime DEFAULT NULL,
   `CandidateElection_Display` enum('yes','no') DEFAULT 'no',
   `CandidateElection_Sex` enum('male','female','both') DEFAULT NULL,
   `CandidateElection_DBTable` varchar(256) DEFAULT NULL,
   `CandidateElection_DBTableValue` varchar(256) DEFAULT NULL,
+  `CandidateElection_VotingMember` enum('yes','no') DEFAULT NULL,
+  `CandidateElection_WeightCoef` int DEFAULT NULL,
+  `CandidateElection_PowerOf` tinyint DEFAULT NULL,
   `CandidateElection_CountVoter` int DEFAULT NULL,
-  PRIMARY KEY (`CandidateElection_ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=15774 DEFAULT CHARSET=latin1 ROW_FORMAT=COMPRESSED KEY_BLOCK_SIZE=8;
+  PRIMARY KEY (`CandidateElection_ID`),
+  KEY `CandidateElectionElectionsPosition_IDX` (`ElectionsPosition_ID`),
+  KEY `CandidateElection_DBTableValue_IDX` (`CandidateElection_DBTableValue`)
+) ENGINE=InnoDB AUTO_INCREMENT=19230 DEFAULT CHARSET=latin1 ROW_FORMAT=COMPRESSED KEY_BLOCK_SIZE=8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -140,11 +205,12 @@ CREATE TABLE `CandidateGroup` (
   `CandidateSet_ID` int unsigned DEFAULT NULL,
   `Candidate_ID` int unsigned DEFAULT NULL,
   `CandidateGroup_Order` tinyint unsigned DEFAULT NULL,
+  `CandidateGroup_SlateOrder` tinyint DEFAULT NULL,
   `DataCounty_ID` int unsigned DEFAULT NULL,
   `CandidateGroup_Party` char(3) DEFAULT NULL,
   `CandidateGroup_Watermark` enum('yes','no') DEFAULT 'yes',
   PRIMARY KEY (`CandidateGroup_ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=220 DEFAULT CHARSET=latin1 ROW_FORMAT=COMPRESSED KEY_BLOCK_SIZE=8;
+) ENGINE=InnoDB AUTO_INCREMENT=1001 DEFAULT CHARSET=latin1 ROW_FORMAT=COMPRESSED KEY_BLOCK_SIZE=8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -160,7 +226,7 @@ CREATE TABLE `CandidatePartySymbol` (
   `CandidatePartySymbol_Size` float DEFAULT NULL,
   `CandidatePartySymbol_Font` varchar(30) DEFAULT NULL,
   PRIMARY KEY (`CandidatePartySymbol_ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -172,28 +238,72 @@ DROP TABLE IF EXISTS `CandidateProfile`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `CandidateProfile` (
   `CandidateProfile_ID` int unsigned NOT NULL AUTO_INCREMENT,
-  `Candidate_ID` int unsigned DEFAULT NULL,
+  `CandidateProfile_CandidateID` int unsigned DEFAULT NULL,
+  `CandidateProfile_WriteSysID` int unsigned DEFAULT NULL,
+  `CandidateProfile_Quarantine` enum('yes','no') DEFAULT NULL,
   `CandidateProfile_PicFileName` varchar(256) DEFAULT NULL,
+  `CandidateProfile_TmpPicFileName` varchar(255) DEFAULT NULL,
+  `CandidateProfile_PicVerif` enum('yes','no') DEFAULT NULL,
   `CandidateProfile_PDFFileName` varchar(256) DEFAULT NULL,
+  `CandidateProfile_TmpPDFFileName` varchar(255) DEFAULT NULL,
+  `CandidateProfile_PDFVerif` enum('yes','no') DEFAULT NULL,
+  `CandidateProfile_PDFPetition` char(12) DEFAULT NULL,
+  `CandidateProfile_PDFPetitionState` char(2) DEFAULT NULL,
+  `Team_ID` int unsigned DEFAULT NULL,
+  `CandidateProfile_PolSelfParty` char(3) DEFAULT NULL,
+  `CandidateProfile_PolSelfCaucus` tinyint unsigned DEFAULT NULL,
+  `CandidateProfile_PolSelfAss` char(3) DEFAULT NULL,
   `CandidateProfile_FirstName` varchar(100) DEFAULT NULL,
   `CandidateProfile_LastName` varchar(100) DEFAULT NULL,
   `CandidateProfile_Alias` varchar(256) DEFAULT NULL,
+  `CandidateRegAuthority_ID` int unsigned DEFAULT NULL,
+  `CandidateProfile_RegID` varchar(40) DEFAULT NULL,
+  `DataConference_ID` int unsigned DEFAULT NULL,
   `CandidateProfile_Website` varchar(256) DEFAULT NULL,
   `CandidateProfile_Email` varchar(256) DEFAULT NULL,
-  `CandidateProfile_Twitter` varchar(40) DEFAULT NULL,
-  `CandidateProfile_Facebook` varchar(40) DEFAULT NULL,
-  `CandidateProfile_Instagram` varchar(40) DEFAULT NULL,
-  `CandidateProfile_TikTok` varchar(40) DEFAULT NULL,
-  `CandidateProfile_YouTube` varchar(40) DEFAULT NULL,
+  `CandidateProfile_SocialImgPath` varchar(15) DEFAULT NULL,
+  `CandidateProfile_Twitter` varchar(256) DEFAULT NULL,
+  `CandidateProfile_BlueSky` varchar(256) DEFAULT NULL,
+  `CandidateProfile_Truth` varchar(256) DEFAULT NULL,
+  `CandidateProfile_Facebook` varchar(256) DEFAULT NULL,
+  `CandidateProfile_LinkedIn` varchar(256) DEFAULT NULL,
+  `CandidateProfile_Instagram` varchar(256) DEFAULT NULL,
+  `CandidateProfile_TikTok` varchar(256) DEFAULT NULL,
+  `CandidateProfile_YouTube` varchar(256) DEFAULT NULL,
   `CandidateProfile_BallotPedia` varchar(256) DEFAULT NULL,
   `CandidateProfile_PhoneNumber` varchar(30) DEFAULT NULL,
   `CandidateProfile_FaxNumber` varchar(30) DEFAULT NULL,
   `CandidateProfile_Statement` text,
-  `CandidateProfile_PublishProfile` enum('yes','no') DEFAULT 'no',
+  `CandidateProfile_Donation` varchar(255) DEFAULT NULL,
   `CandidateProfile_PublishPetition` enum('yes','no') DEFAULT 'no',
+  `CandidateProfile_Complain` enum('yes','no') DEFAULT NULL,
+  `CandidateProfile_LastModified` date DEFAULT NULL,
   PRIMARY KEY (`CandidateProfile_ID`),
-  KEY `CandidateProfile_ID_IDX` (`Candidate_ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=latin1 ROW_FORMAT=COMPRESSED KEY_BLOCK_SIZE=8;
+  FULLTEXT KEY `CandidateProfile_Alias_FT` (`CandidateProfile_Alias`)
+) ENGINE=InnoDB AUTO_INCREMENT=12433 DEFAULT CHARSET=latin1 ROW_FORMAT=COMPRESSED KEY_BLOCK_SIZE=8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `CandidateRegAuthority`
+--
+
+DROP TABLE IF EXISTS `CandidateRegAuthority`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `CandidateRegAuthority` (
+  `CandidateRegAuthority_ID` int unsigned NOT NULL AUTO_INCREMENT,
+  `CandidateRegAuthority_Name` varchar(256) DEFAULT NULL,
+  `CandidateRegAuthority_Abbrev` varchar(40) DEFAULT NULL,
+  `DataState_ID` int unsigned DEFAULT NULL,
+  `DataCounty_ID` int unsigned DEFAULT NULL,
+  `DataCity_ID` int unsigned DEFAULT NULL,
+  `CandidateRegAuthority_WebSite` varchar(256) DEFAULT NULL,
+  `CandidateRegAuthority_Query` varchar(256) DEFAULT NULL,
+  `CandidateRegAuthority_QueryPost` varchar(256) DEFAULT NULL,
+  `CandidateRegAuthority_API` varchar(256) DEFAULT NULL,
+  `CandidateRegAuthority_Status` enum('federal','state','county','city','other') DEFAULT NULL,
+  PRIMARY KEY (`CandidateRegAuthority_ID`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1 ROW_FORMAT=COMPRESSED KEY_BLOCK_SIZE=8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -206,11 +316,11 @@ DROP TABLE IF EXISTS `CandidateSet`;
 CREATE TABLE `CandidateSet` (
   `CandidateSet_ID` int unsigned NOT NULL AUTO_INCREMENT,
   `SystemUser_ID` int unsigned DEFAULT NULL,
-  `CandidateSET_Random` char(12) DEFAULT NULL,
+  `CandidateSet_Random` char(12) DEFAULT NULL,
   `CandidateSet_TimeStamp` datetime DEFAULT NULL,
   PRIMARY KEY (`CandidateSet_ID`),
-  KEY `CandidateSet_Random_IDX` (`CandidateSET_Random`)
-) ENGINE=InnoDB AUTO_INCREMENT=91 DEFAULT CHARSET=latin1 ROW_FORMAT=COMPRESSED KEY_BLOCK_SIZE=8;
+  KEY `CandidateSet_Random_IDX` (`CandidateSet_Random`)
+) ENGINE=InnoDB AUTO_INCREMENT=415 DEFAULT CHARSET=latin1 ROW_FORMAT=COMPRESSED KEY_BLOCK_SIZE=8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -228,21 +338,21 @@ CREATE TABLE `DataAddress` (
   `DataStreet_ID` int unsigned DEFAULT NULL,
   `DataAddress_PostStreet` varchar(100) DEFAULT NULL,
   `DataCity_ID` int unsigned DEFAULT NULL,
-  `DataState_ID` int unsigned DEFAULT NULL,
+  `DataCounty_ID` int unsigned DEFAULT NULL,
   `DataAddress_zipcode` varchar(30) DEFAULT NULL,
   `DataAddress_zip4` varchar(10) DEFAULT NULL,
   `Cordinate_ID` int unsigned DEFAULT NULL,
   `PG_OSM_osmid` bigint DEFAULT NULL,
   PRIMARY KEY (`DataAddress_ID`),
-  KEY `DataAddressAll_IDX` (`DataAddress_HouseNumber`,`DataAddress_FracAddress`,`DataAddress_PreStreet`,`DataStreet_ID`,`DataAddress_PostStreet`,`DataCity_ID`,`DataState_ID`,`DataAddress_zipcode`,`DataAddress_zip4`),
+  KEY `DataAddressAll_IDX` (`DataAddress_HouseNumber`,`DataAddress_FracAddress`,`DataAddress_PreStreet`,`DataStreet_ID`,`DataAddress_PostStreet`,`DataCity_ID`,`DataAddress_zipcode`,`DataAddress_zip4`),
   KEY `DataAddressZipcodes_IDX` (`DataAddress_zipcode`),
-  KEY `DataAddressMost` (`DataAddress_HouseNumber`,`DataAddress_FracAddress`,`DataAddress_PreStreet`,`DataStreet_ID`,`DataAddress_PostStreet`,`DataCity_ID`,`DataState_ID`,`DataAddress_zipcode`),
+  KEY `DataAddressMost` (`DataAddress_HouseNumber`,`DataAddress_FracAddress`,`DataAddress_PreStreet`,`DataStreet_ID`,`DataAddress_PostStreet`,`DataCity_ID`,`DataAddress_zipcode`),
   KEY `DataAddressCordinate_IDX` (`Cordinate_ID`),
   KEY `DataAddress_ID_IDX` (`DataAddress_ID`),
   KEY `DataAddress_DataStreet_IDX` (`DataStreet_ID`),
   KEY `DataAddress_City_IDX` (`DataCity_ID`),
-  KEY `DataAddress_State_IDX` (`DataState_ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=9575653 DEFAULT CHARSET=latin1 ROW_FORMAT=COMPRESSED KEY_BLOCK_SIZE=8;
+  KEY `DataAddress_DataCounty_IDX` (`DataCounty_ID`)
+) ENGINE=InnoDB AUTO_INCREMENT=7571577 DEFAULT CHARSET=latin1 ROW_FORMAT=COMPRESSED KEY_BLOCK_SIZE=8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -258,7 +368,52 @@ CREATE TABLE `DataCity` (
   PRIMARY KEY (`DataCity_ID`),
   UNIQUE KEY `DataCity_Name` (`DataCity_Name`),
   KEY `DataCityName_IDX` (`DataCity_Name`)
-) ENGINE=InnoDB AUTO_INCREMENT=2076 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=4946 DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `DataClub`
+--
+
+DROP TABLE IF EXISTS `DataClub`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `DataClub` (
+  `DataClub_ID` int unsigned NOT NULL AUTO_INCREMENT,
+  `State_ID` int unsigned DEFAULT NULL,
+  `DataCounty_ID` int unsigned DEFAULT NULL,
+  `DataParty_ID` int unsigned DEFAULT NULL,
+  `DataClub_Name` varchar(256) DEFAULT NULL,
+  `DataClub_Web` varchar(256) DEFAULT NULL,
+  `DataClub_Email` varchar(256) DEFAULT NULL,
+  `DataClub_enum` enum('party','club') DEFAULT NULL,
+  `DataClub_LastVerified` datetime DEFAULT NULL,
+  PRIMARY KEY (`DataClub_ID`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `DataConference`
+--
+
+DROP TABLE IF EXISTS `DataConference`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `DataConference` (
+  `DataConference_ID` int unsigned NOT NULL AUTO_INCREMENT,
+  `DataConference_Name` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `DataConference_Abbrev` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `DataConference_Web` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `DataConference_LogoPath` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `DataConference_Left_ID` int unsigned DEFAULT NULL,
+  `DataConference_Right_ID` int unsigned DEFAULT NULL,
+  `CandidateElection_DBTable` varchar(256) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `DataInter_ID` int unsigned DEFAULT NULL,
+  `DataConference_ValidFrom` datetime DEFAULT NULL,
+  `DataConference_ValidTo` datetime DEFAULT NULL,
+  PRIMARY KEY (`DataConference_ID`),
+  KEY `DataConference_CandidateElection_DBTableIDX` (`CandidateElection_DBTable`)
+) ENGINE=InnoDB AUTO_INCREMENT=29 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=COMPRESSED KEY_BLOCK_SIZE=8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -273,7 +428,8 @@ CREATE TABLE `DataCounty` (
   `DataState_ID` int unsigned DEFAULT NULL,
   `DataCounty_Name` varchar(40) DEFAULT NULL,
   `DataCounty_BOEID` int unsigned DEFAULT NULL,
-  PRIMARY KEY (`DataCounty_ID`)
+  PRIMARY KEY (`DataCounty_ID`),
+  KEY `DataCounty_BOEID_IDX` (`DataCounty_BOEID`)
 ) ENGINE=InnoDB AUTO_INCREMENT=151 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -286,28 +442,32 @@ DROP TABLE IF EXISTS `DataDistrict`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `DataDistrict` (
   `DataDistrict_ID` int unsigned NOT NULL AUTO_INCREMENT,
+  `DataDistrict_ZipCode` char(5) DEFAULT NULL,
+  `DataDistrict_DBTable` varchar(100) DEFAULT NULL,
+  `DataDistrict_DBTableValue` varchar(100) DEFAULT NULL,
   `DataCounty_ID` int unsigned DEFAULT NULL,
+  `DataDistrictTown_ID` int unsigned DEFAULT NULL,
   `DataDistrict_Electoral` smallint unsigned DEFAULT NULL,
-  `DataDistrict_StateAssembly` tinyint unsigned DEFAULT NULL,
-  `DataDistrict_SenateSenate` tinyint unsigned DEFAULT NULL,
+  `DataDistrict_StateAssembly` smallint unsigned DEFAULT NULL,
+  `DataDistrict_StateSenate` tinyint unsigned DEFAULT NULL,
   `DataDistrict_Legislative` smallint unsigned DEFAULT NULL,
   `DataDistrict_Ward` char(3) DEFAULT NULL,
   `DataDistrict_Congress` tinyint unsigned DEFAULT NULL,
-  `DataDistrict_Council` tinyint unsigned DEFAULT NULL,
-  `DataDistrict_CivilCourt` tinyint unsigned DEFAULT NULL,
-  `DataDistrict_Judicial` smallint unsigned DEFAULT NULL,
   PRIMARY KEY (`DataDistrict_ID`),
+  KEY `DataDistrict_DataCountyID_IDX` (`DataCounty_ID`),
   KEY `DataDistrict_StateAssembly_IDX` (`DataDistrict_StateAssembly`),
-  KEY `DataDistrict_SenateSenate_IDX` (`DataDistrict_SenateSenate`),
+  KEY `DataDistrict_StateSenate_IDX` (`DataDistrict_StateSenate`),
   KEY `DataDistrict_Congress_IDX` (`DataDistrict_Congress`),
-  KEY `DataDistrict_Council_IDX` (`DataDistrict_Council`),
-  KEY `DataDistrict_Judicial_IDX` (`DataDistrict_Judicial`),
+  KEY `DataDistrict_Town_IDX` (`DataDistrictTown_ID`),
   KEY `DataDistrict_Legislative_IDX` (`DataDistrict_Legislative`),
   KEY `DataDistrict_Ward_IDX` (`DataDistrict_Ward`),
   KEY `DataDistrict_Electoral_IDX` (`DataDistrict_Electoral`),
   KEY `DataDistrict_Electoral_StateAssembly_IDX` (`DataDistrict_Electoral`,`DataDistrict_StateAssembly`),
-  KEY `DataDistrict_CivilCourt_IDX` (`DataDistrict_CivilCourt`)
-) ENGINE=InnoDB AUTO_INCREMENT=20210 DEFAULT CHARSET=latin1 ROW_FORMAT=COMPRESSED KEY_BLOCK_SIZE=8;
+  KEY `ElectResultCandidate_DataDistrict_IDX` (`DataDistrict_ID`),
+  KEY `DataDistrict_ZipCode_IDX` (`DataDistrict_ZipCode`),
+  KEY `DataDistrict_DBTable_IDX` (`DataDistrict_DBTable`),
+  KEY `DataDistrict_DBTableValue_IDX` (`DataDistrict_DBTableValue`)
+) ENGINE=InnoDB AUTO_INCREMENT=131779 DEFAULT CHARSET=latin1 ROW_FORMAT=COMPRESSED KEY_BLOCK_SIZE=8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -322,7 +482,7 @@ CREATE TABLE `DataDistrictCycle` (
   `DataDistrictCycle_CycleStartDate` date DEFAULT NULL,
   `DataDistrictCycle_CycleEndDate` date DEFAULT NULL,
   PRIMARY KEY (`DataDistrictCycle_ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1 ROW_FORMAT=COMPRESSED KEY_BLOCK_SIZE=8;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=latin1 ROW_FORMAT=COMPRESSED KEY_BLOCK_SIZE=8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -335,16 +495,14 @@ DROP TABLE IF EXISTS `DataDistrictTemporal`;
 CREATE TABLE `DataDistrictTemporal` (
   `DataDistrictTemporal_ID` int unsigned NOT NULL AUTO_INCREMENT,
   `DataDistrictCycle_ID` int unsigned DEFAULT NULL,
-  `DataDistrictTemporal_GroupID` int unsigned DEFAULT NULL,
+  `DataHouse_ID` int unsigned DEFAULT NULL,
   `DataDistrict_ID` int unsigned DEFAULT NULL,
-  `DataDistrictTemporal_DBTable` varchar(10) DEFAULT NULL,
-  `DataDistrictTemporal_DBTableValue` varchar(10) DEFAULT NULL,
   PRIMARY KEY (`DataDistrictTemporal_ID`),
-  KEY `DataDistrictTemporal_DBTable_IDX` (`DataDistrictTemporal_DBTable`,`DataDistrictTemporal_DBTableValue`),
   KEY `DataDistrictTemporal_DataDistrictCycle_IDX` (`DataDistrictCycle_ID`),
-  KEY `DataDistrictTemporal_GroupID_IDX` (`DataDistrictTemporal_GroupID`),
-  KEY `DataDistrictTemporal_GroupIDCycle_IDX` (`DataDistrictTemporal_GroupID`,`DataDistrictCycle_ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=30665 DEFAULT CHARSET=latin1 ROW_FORMAT=COMPRESSED KEY_BLOCK_SIZE=8;
+  KEY `DataDistrictTemporal_GroupIDCycle_IDX` (`DataDistrictCycle_ID`),
+  KEY `DataDistrict_ID_IDX` (`DataDistrict_ID`),
+  KEY `DataDistrictTemporal_DataHouse_IDX` (`DataHouse_ID`)
+) ENGINE=InnoDB AUTO_INCREMENT=21404111 DEFAULT CHARSET=latin1 ROW_FORMAT=COMPRESSED KEY_BLOCK_SIZE=8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -360,7 +518,7 @@ CREATE TABLE `DataDistrictTown` (
   PRIMARY KEY (`DataDistrictTown_ID`),
   UNIQUE KEY `DataDistrictTown_Name` (`DataDistrictTown_Name`),
   KEY `DataDistrictTown_IDX` (`DataDistrictTown_Name`)
-) ENGINE=InnoDB AUTO_INCREMENT=1245 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=1691 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -377,7 +535,7 @@ CREATE TABLE `DataFirstName` (
   PRIMARY KEY (`DataFirstName_ID`),
   KEY `DataFirstName_Text_IDX` (`DataFirstName_Text`),
   KEY `DataFirstName_Compress_IDX` (`DataFirstName_Compress`)
-) ENGINE=InnoDB AUTO_INCREMENT=662080 DEFAULT CHARSET=latin1 ROW_FORMAT=COMPRESSED KEY_BLOCK_SIZE=8;
+) ENGINE=InnoDB AUTO_INCREMENT=777193 DEFAULT CHARSET=latin1 ROW_FORMAT=COMPRESSED KEY_BLOCK_SIZE=8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -390,15 +548,38 @@ DROP TABLE IF EXISTS `DataHouse`;
 CREATE TABLE `DataHouse` (
   `DataHouse_ID` int unsigned NOT NULL AUTO_INCREMENT,
   `DataAddress_ID` int unsigned DEFAULT NULL,
+  `DataHouse_Type` varchar(10) DEFAULT NULL,
   `DataHouse_Apt` varchar(100) DEFAULT NULL,
-  `DataDistrictTemporal_GroupID` int unsigned DEFAULT NULL,
-  `DataDistrictTown_ID` int unsigned DEFAULT NULL,
+  `DataStreetNonStdFormat_ID` int unsigned DEFAULT NULL,
   `DataHouse_BIN` int unsigned DEFAULT NULL,
   PRIMARY KEY (`DataHouse_ID`),
   KEY `DataHouseDataAddress_IDX` (`DataAddress_ID`),
   KEY `DataHouseDataAddressApt_IDX` (`DataAddress_ID`,`DataHouse_Apt`),
   KEY `DataHouse_BIN_IDX` (`DataHouse_BIN`)
-) ENGINE=InnoDB AUTO_INCREMENT=9559625 DEFAULT CHARSET=latin1 ROW_FORMAT=COMPRESSED KEY_BLOCK_SIZE=8;
+) ENGINE=InnoDB AUTO_INCREMENT=14492860 DEFAULT CHARSET=latin1 ROW_FORMAT=COMPRESSED KEY_BLOCK_SIZE=8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `DataInter`
+--
+
+DROP TABLE IF EXISTS `DataInter`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `DataInter` (
+  `DataInter_ID` int unsigned NOT NULL AUTO_INCREMENT,
+  `DataInter_Name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `DataInter_Abbrev` varchar(40) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `DataInter_Web` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `DataInter_LogoPath` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `DataInter_Left_ID` int unsigned DEFAULT NULL,
+  `DataInter_Right_ID` int unsigned DEFAULT NULL,
+  `DataInter_DBTable` varchar(256) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `DataInter_ValidFrom` datetime DEFAULT NULL,
+  `DataInter_ValidTo` datetime DEFAULT NULL,
+  PRIMARY KEY (`DataInter_ID`),
+  KEY `DataInter_DataInter_Name_IDX` (`DataInter_Name`)
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -415,7 +596,24 @@ CREATE TABLE `DataLastName` (
   PRIMARY KEY (`DataLastName_ID`),
   KEY `DataLastName_Text_IDX` (`DataLastName_Text`),
   KEY `DataLastName_Compress_IDX` (`DataLastName_Compress`)
-) ENGINE=InnoDB AUTO_INCREMENT=1152466 DEFAULT CHARSET=latin1 ROW_FORMAT=COMPRESSED KEY_BLOCK_SIZE=8;
+) ENGINE=InnoDB AUTO_INCREMENT=2713739 DEFAULT CHARSET=latin1 ROW_FORMAT=COMPRESSED KEY_BLOCK_SIZE=8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `DataMailingAddress`
+--
+
+DROP TABLE IF EXISTS `DataMailingAddress`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `DataMailingAddress` (
+  `DataMailingAddress_ID` int unsigned NOT NULL AUTO_INCREMENT,
+  `DataMailingAddress_Line1` varchar(256) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `DataMailingAddress_Line2` varchar(256) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `DataMailingAddress_Line3` varchar(256) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `DataMailingAddress_Line4` varchar(256) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  PRIMARY KEY (`DataMailingAddress_ID`)
+) ENGINE=InnoDB AUTO_INCREMENT=1959977 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=COMPRESSED KEY_BLOCK_SIZE=8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -432,7 +630,45 @@ CREATE TABLE `DataMiddleName` (
   PRIMARY KEY (`DataMiddleName_ID`),
   KEY `DataMiddleName_Text_IDX` (`DataMiddleName_Text`),
   KEY `DataMiddleName_Compress_IDX` (`DataMiddleName_Compress`)
-) ENGINE=InnoDB AUTO_INCREMENT=142531 DEFAULT CHARSET=latin1 ROW_FORMAT=COMPRESSED KEY_BLOCK_SIZE=8;
+) ENGINE=InnoDB AUTO_INCREMENT=214330 DEFAULT CHARSET=latin1 ROW_FORMAT=COMPRESSED KEY_BLOCK_SIZE=8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `DataPAC`
+--
+
+DROP TABLE IF EXISTS `DataPAC`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `DataPAC` (
+  `DataPAC_ID` int unsigned NOT NULL AUTO_INCREMENT,
+  `DataPAC_Name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `DataPAC_Web` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `DataPAC_LogoPath` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `DataPAC_EuropeanModel` enum('right','left') COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `DataPAC_AmericanModel` enum('right','left') COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `DataPAC_Type` enum('pac','caucus','party','other') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `DataPAC_Official` enum('yes','no','adhoc') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  PRIMARY KEY (`DataPAC_ID`),
+  KEY `DataPAC_Name_IDX` (`DataPAC_Name`)
+) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=COMPRESSED KEY_BLOCK_SIZE=8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `DataPACCandidate`
+--
+
+DROP TABLE IF EXISTS `DataPACCandidate`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `DataPACCandidate` (
+  `DataPACCandidate_ID` int unsigned NOT NULL AUTO_INCREMENT,
+  `CandidateProfile_ID` int unsigned DEFAULT NULL,
+  `DataPAC_ID` int unsigned DEFAULT NULL,
+  PRIMARY KEY (`DataPACCandidate_ID`),
+  KEY `DataPACCandidate_CandidateProfile_ID_IDX` (`CandidateProfile_ID`),
+  KEY `DataPACCandidate_DataPAC_ID_IDX` (`DataPAC_ID`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -451,7 +687,26 @@ CREATE TABLE `DataParty` (
   PRIMARY KEY (`DataParty_ID`),
   KEY `DataParty_Abbrev_IDX` (`DataParty_Abbrev`),
   KEY `DataParty_DataState_IDX` (`DataState_ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `DataPartyPAC`
+--
+
+DROP TABLE IF EXISTS `DataPartyPAC`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `DataPartyPAC` (
+  `DataPartyPAC_ID` int unsigned NOT NULL AUTO_INCREMENT,
+  `DataPAC_ID` int unsigned DEFAULT NULL,
+  `DataParty_ID` int unsigned DEFAULT NULL,
+  `DataPartyPAC_ValidFrom` date DEFAULT NULL,
+  `DataPartyPAC_ValidTo` date DEFAULT NULL,
+  PRIMARY KEY (`DataPartyPAC_ID`),
+  KEY `DataPartyPac_DataPAC_ID_IDX` (`DataPAC_ID`),
+  KEY `DataPartyPac_DataParty_ID_IDX` (`DataParty_ID`)
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -467,8 +722,9 @@ CREATE TABLE `DataState` (
   `DataState_Abbrev` char(2) DEFAULT NULL,
   PRIMARY KEY (`DataState_ID`),
   UNIQUE KEY `DataState_Name` (`DataState_Name`),
-  KEY `DataStateName_IDX` (`DataState_Name`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
+  KEY `DataStateName_IDX` (`DataState_Name`),
+  KEY `DataState_Abbrev_IDX` (`DataState_Abbrev`)
+) ENGINE=InnoDB AUTO_INCREMENT=87 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -485,7 +741,43 @@ CREATE TABLE `DataStreet` (
   UNIQUE KEY `DataStreet_Name` (`DataStreet_Name`),
   KEY `DataStreetName_IDX` (`DataStreet_Name`),
   KEY `DataStreet_ID_IDX` (`DataStreet_ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=107455 DEFAULT CHARSET=latin1 ROW_FORMAT=COMPRESSED KEY_BLOCK_SIZE=8;
+) ENGINE=InnoDB AUTO_INCREMENT=119361 DEFAULT CHARSET=latin1 ROW_FORMAT=COMPRESSED KEY_BLOCK_SIZE=8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `DataStreetNonStdFormat`
+--
+
+DROP TABLE IF EXISTS `DataStreetNonStdFormat`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `DataStreetNonStdFormat` (
+  `DataStreetNonStdFormat_ID` int unsigned NOT NULL AUTO_INCREMENT,
+  `DataStreetNonStdFormat_Text` varchar(250) DEFAULT NULL,
+  PRIMARY KEY (`DataStreetNonStdFormat_ID`)
+) ENGINE=InnoDB AUTO_INCREMENT=26218 DEFAULT CHARSET=latin1 ROW_FORMAT=COMPRESSED KEY_BLOCK_SIZE=8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `ElectResultCandidate`
+--
+
+DROP TABLE IF EXISTS `ElectResultCandidate`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `ElectResultCandidate` (
+  `ElectResultCandidate_ID` int unsigned NOT NULL AUTO_INCREMENT,
+  `ElectResult_ID` int unsigned DEFAULT NULL,
+  `CandidateProfile_ID` int unsigned DEFAULT NULL,
+  `CandidateElection_ID` int unsigned DEFAULT NULL,
+  `ElectResultCandidate_Count` smallint unsigned DEFAULT NULL,
+  `ElectResultCandidate_Elected` enum('yes','no','pending') DEFAULT NULL,
+  `ElectResultCandidate_InOffice` enum('yes','no') DEFAULT NULL,
+  PRIMARY KEY (`ElectResultCandidate_ID`),
+  KEY `ElectResultCandidate_ElectResult_ID_IDX` (`ElectResult_ID`),
+  KEY `ElectResultCandidate_CandidateProfile_ID_IDX` (`CandidateProfile_ID`),
+  KEY `ElectResultCandidate_CandidateElection_ID_IDX` (`CandidateElection_ID`)
+) ENGINE=InnoDB AUTO_INCREMENT=504 DEFAULT CHARSET=latin1 ROW_FORMAT=COMPRESSED KEY_BLOCK_SIZE=8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -500,55 +792,12 @@ CREATE TABLE `Elections` (
   `DataState_ID` int unsigned DEFAULT NULL,
   `Elections_Text` varchar(256) DEFAULT NULL,
   `Elections_Date` date DEFAULT NULL,
-  `Elections_Type` enum('primary','general','special','other') DEFAULT NULL,
+  `Elections_Type` enum('primary','general','special','runoff','other','toverify') DEFAULT NULL,
   PRIMARY KEY (`Elections_ID`),
-  KEY `Elections_ID_IDX` (`Elections_Text`)
-) ENGINE=InnoDB AUTO_INCREMENT=1373 DEFAULT CHARSET=latin1 ROW_FORMAT=COMPRESSED KEY_BLOCK_SIZE=8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `ElectionsDistricts`
---
-
-DROP TABLE IF EXISTS `ElectionsDistricts`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `ElectionsDistricts` (
-  `ElectionsDistricts_ID` int unsigned NOT NULL AUTO_INCREMENT,
-  `ElectionsDistricts_Party` char(3) DEFAULT NULL,
-  `Elections_ID` int unsigned DEFAULT NULL,
-  `CandidatePositions_ID` int unsigned DEFAULT NULL,
-  `DataCounty_ID` int unsigned DEFAULT NULL,
-  `ElectionsDistricts_DBTable` varchar(256) DEFAULT NULL,
-  `ElectionsDistricts_DBTableValue` varchar(256) DEFAULT NULL,
-  `ElectionsDistricts_NumberFemale` int unsigned DEFAULT NULL,
-  `Elections_ID_Female` int unsigned DEFAULT NULL,
-  `ElectionsDistricts_NumberMale` int unsigned DEFAULT NULL,
-  `Elections_ID_Male` int unsigned DEFAULT NULL,
-  `ElectionsDistricts_NumberUnixSex` int unsigned DEFAULT NULL,
-  `Elections_ID_Unisex` int unsigned DEFAULT NULL,
-  PRIMARY KEY (`ElectionsDistricts_ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 ROW_FORMAT=COMPRESSED KEY_BLOCK_SIZE=8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `ElectionsDistrictsConv`
---
-
-DROP TABLE IF EXISTS `ElectionsDistrictsConv`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `ElectionsDistrictsConv` (
-  `ElectionsDistrictsConv_ID` int unsigned NOT NULL AUTO_INCREMENT,
-  `Elections_ID` int unsigned DEFAULT NULL,
-  `DataCounty_ID` int unsigned DEFAULT NULL,
-  `ElectionsDistricts_Party` char(3) DEFAULT NULL,
-  `ElectionsDistricts_DBTable` varchar(256) DEFAULT NULL,
-  `ElectionsDistricts_DBTableValue` varchar(256) DEFAULT NULL,
-  `ElectionsDistrictsConv_DBTable` varchar(256) DEFAULT NULL,
-  `ElectionsDistrictsConv_DBTableValue` varchar(256) DEFAULT NULL,
-  PRIMARY KEY (`ElectionsDistrictsConv_ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 ROW_FORMAT=COMPRESSED KEY_BLOCK_SIZE=8;
+  KEY `Elections_ID_IDX` (`Elections_Text`),
+  KEY `Elections_DateState_IDX` (`Elections_Date`,`DataState_ID`),
+  KEY `Elections_DataState_IDX` (`DataState_ID`)
+) ENGINE=InnoDB AUTO_INCREMENT=1599 DEFAULT CHARSET=latin1 ROW_FORMAT=COMPRESSED KEY_BLOCK_SIZE=8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -562,18 +811,29 @@ CREATE TABLE `ElectionsPartyCall` (
   `ElectionsPartyCall_ID` int unsigned NOT NULL AUTO_INCREMENT,
   `ElectionsPartyCall_Party` char(3) DEFAULT NULL,
   `Elections_ID` int unsigned DEFAULT NULL,
-  `CandidatePositions_ID` int unsigned DEFAULT NULL,
+  `ElectionsPosition_ID` int unsigned DEFAULT NULL,
   `DataCounty_ID` int unsigned DEFAULT NULL,
   `ElectionsPartyCall_DBTable` varchar(256) DEFAULT NULL,
   `ElectionsPartyCall_DBTableValue` varchar(256) DEFAULT NULL,
+  `ElectionsPartyCall_ConversionValue` varchar(256) DEFAULT NULL,
+  `ElectionsPartyCall_SignDeadline` datetime DEFAULT NULL,
+  `ElectionsPartyCall_TotalNumberCandidates` int unsigned DEFAULT NULL,
   `ElectionsPartyCall_NumberFemale` int unsigned DEFAULT NULL,
   `Elections_ID_Female` int unsigned DEFAULT NULL,
   `ElectionsPartyCall_NumberMale` int unsigned DEFAULT NULL,
   `Elections_ID_Male` int unsigned DEFAULT NULL,
   `ElectionsPartyCall_NumberUnixSex` int unsigned DEFAULT NULL,
   `Elections_ID_Unisex` int unsigned DEFAULT NULL,
-  PRIMARY KEY (`ElectionsPartyCall_ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=5279 DEFAULT CHARSET=latin1;
+  PRIMARY KEY (`ElectionsPartyCall_ID`),
+  KEY `ElectionsPartyCall_ElectionsPartyCall_DBTable_IDX` (`ElectionsPartyCall_DBTable`),
+  KEY `ElectionsPartyCall_ElectionsPartyCall_DBTableValue_IDX` (`ElectionsPartyCall_DBTableValue`),
+  KEY `ElectionsPartyCall_ElectionsPartyCall_ConversionValue_IDX` (`ElectionsPartyCall_ConversionValue`),
+  KEY `ElectionsPartyCall_DataCounty_ID_IDX` (`DataCounty_ID`),
+  KEY `ElectionsPartyCall_ElectionsID_IDX` (`Elections_ID`),
+  KEY `ElectionsPartyCall_ElectionsPartyCall_Party_IDX` (`ElectionsPartyCall_Party`),
+  KEY `ElectionsPartyCall_ElectionsPositionID_IDX` (`ElectionsPosition_ID`),
+  KEY `ElectionsPartyCall_SignDeadline_IDX` (`ElectionsPartyCall_SignDeadline`)
+) ENGINE=InnoDB AUTO_INCREMENT=22119 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -587,14 +847,16 @@ CREATE TABLE `ElectionsPosition` (
   `ElectionsPosition_ID` int unsigned NOT NULL AUTO_INCREMENT,
   `ElectionsPosition_DBTable` varchar(100) DEFAULT NULL,
   `DataState_ID` int unsigned DEFAULT NULL,
-  `ElectionsPosition_State` char(2) DEFAULT NULL,
   `ElectionsPosition_Type` enum('party','office','corporate') DEFAULT NULL,
   `ElectionsPosition_Name` varchar(100) DEFAULT NULL,
   `ElectionsPosition_Party` char(3) DEFAULT NULL,
   `ElectionsPosition_Order` int unsigned DEFAULT NULL,
+  `ElectionsPosition_Location` enum('table','partycall','state','other') DEFAULT NULL,
+  `ElectionsPosition_DBTableName` varchar(256) DEFAULT NULL,
   `ElectionsPosition_Explanation` text,
-  PRIMARY KEY (`ElectionsPosition_ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=latin1;
+  PRIMARY KEY (`ElectionsPosition_ID`),
+  KEY `ElectionsPosition_DataState_IDX` (`DataState_ID`)
+) ENGINE=InnoDB AUTO_INCREMENT=859 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -606,6 +868,7 @@ DROP TABLE IF EXISTS `FillingDoc`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `FillingDoc` (
   `FillingDoc_ID` int unsigned NOT NULL AUTO_INCREMENT,
+  `FillingDoc_Type` varchar(100) DEFAULT NULL,
   `Candidate_ID` int unsigned DEFAULT NULL,
   `FillingDoc_Fld1` varchar(256) DEFAULT NULL,
   `FillingDoc_Fld2` varchar(256) DEFAULT NULL,
@@ -629,8 +892,9 @@ CREATE TABLE `FillingDoc` (
   `FillingDoc_Fld20` varchar(256) DEFAULT NULL,
   `FillingDoc_Date` datetime DEFAULT NULL,
   PRIMARY KEY (`FillingDoc_ID`),
-  KEY `FillingDoc_ID_IDX` (`FillingDoc_ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=latin1 ROW_FORMAT=COMPRESSED KEY_BLOCK_SIZE=8;
+  KEY `FillingDoc_ID_IDX` (`FillingDoc_ID`),
+  KEY `FillingDoc_Type_IDX` (`FillingDoc_Type`)
+) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=latin1 ROW_FORMAT=COMPRESSED KEY_BLOCK_SIZE=8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -645,7 +909,7 @@ CREATE TABLE `FillingField` (
   `FillingField_Text` varchar(256) DEFAULT NULL,
   PRIMARY KEY (`FillingField_ID`),
   KEY `FillingField_TextIDX` (`FillingField_Text`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=latin1 ROW_FORMAT=COMPRESSED KEY_BLOCK_SIZE=8;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 ROW_FORMAT=COMPRESSED KEY_BLOCK_SIZE=8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -657,7 +921,7 @@ DROP TABLE IF EXISTS `FillingObjections`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `FillingObjections` (
   `FillingObjections_ID` int unsigned NOT NULL AUTO_INCREMENT,
-  `DataCounty_ID` int unsigned DEFAULT NULL,
+  `County_ID` int unsigned DEFAULT NULL,
   `Candidate_ID` int unsigned DEFAULT NULL,
   `CandidateSet_ID` int unsigned DEFAULT NULL,
   `FillingObjections_DateAppear` date DEFAULT NULL,
@@ -676,7 +940,7 @@ CREATE TABLE `FillingObjections` (
   `FillingObjections_RepEmail` varchar(255) DEFAULT NULL,
   `FillingObjections_SignedDate` date DEFAULT NULL,
   PRIMARY KEY (`FillingObjections_ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -697,7 +961,248 @@ CREATE TABLE `FillingTrack` (
   `FillingTrack_TimeStamp` datetime DEFAULT NULL,
   PRIMARY KEY (`FillingTrack_ID`),
   KEY `FillingTrack_BOEID_IDX` (`FillingTrack_BOEID`)
-) ENGINE=InnoDB AUTO_INCREMENT=58 DEFAULT CHARSET=latin1 ROW_FORMAT=COMPRESSED KEY_BLOCK_SIZE=8;
+) ENGINE=InnoDB AUTO_INCREMENT=199 DEFAULT CHARSET=latin1 ROW_FORMAT=COMPRESSED KEY_BLOCK_SIZE=8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `Objections`
+--
+
+DROP TABLE IF EXISTS `Objections`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `Objections` (
+  `Objections_ID` int unsigned NOT NULL AUTO_INCREMENT,
+  `SystemUser_ID` int unsigned DEFAULT NULL,
+  `Team_ID` int unsigned DEFAULT NULL,
+  `Candidate_ID` int unsigned DEFAULT NULL,
+  `Slate_ID` int unsigned DEFAULT NULL,
+  `Objections_VolumeID` varchar(256) DEFAULT NULL,
+  `Objections_SheetsNumber` smallint unsigned DEFAULT NULL,
+  `Objections_Created` datetime DEFAULT NULL,
+  PRIMARY KEY (`Objections_ID`),
+  KEY `Objections_VolumeID_IDX` (`Objections_VolumeID`),
+  KEY `Slate_ID_IDX` (`Slate_ID`),
+  KEY `SystemUser_IDX` (`SystemUser_ID`),
+  KEY `Candidate_ID_IDX` (`Candidate_ID`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1 ROW_FORMAT=COMPRESSED KEY_BLOCK_SIZE=8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `ObjectionsDetails`
+--
+
+DROP TABLE IF EXISTS `ObjectionsDetails`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `ObjectionsDetails` (
+  `ObjectionsDetails_ID` int unsigned NOT NULL AUTO_INCREMENT,
+  `Objections_ID` int unsigned DEFAULT NULL,
+  `Voter_ID` int unsigned DEFAULT NULL,
+  `Voters_UniqStateVoterID` varchar(50) DEFAULT NULL,
+  `ObjectionsDetails_Sheet` smallint unsigned DEFAULT NULL,
+  `ObjectionsDetails_Line` tinyint unsigned DEFAULT NULL,
+  `ObjectionsDetails_Specs` varchar(255) DEFAULT NULL,
+  `ObjectionsDetails_Date` date DEFAULT NULL,
+  `ObjectionsDetails_Name` varchar(256) DEFAULT NULL,
+  `ObjectionsDetails_Signature` varchar(256) DEFAULT NULL,
+  `OjectionssDetails_ResidenceLine1` varchar(256) DEFAULT NULL,
+  `OjectionssDetails_ResidenceLine2` varchar(256) DEFAULT NULL,
+  `OjectionssDetails_County` varchar(256) DEFAULT NULL,
+  `ObjectionsDetails_EntryBySystemID` int unsigned DEFAULT NULL,
+  PRIMARY KEY (`ObjectionsDetails_ID`),
+  KEY `Objections_ID_IDX` (`Objections_ID`),
+  KEY `Voter_ID_IDX` (`Voter_ID`),
+  KEY `Voters_UniqStateVoterID_IDX` (`Voters_UniqStateVoterID`),
+  KEY `ObjectionsDetails_Name_IDX` (`ObjectionsDetails_Name`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1 ROW_FORMAT=COMPRESSED KEY_BLOCK_SIZE=8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `OpenAddresses`
+--
+
+DROP TABLE IF EXISTS `OpenAddresses`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `OpenAddresses` (
+  `OpenAddresses_ID` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `OpenAddresses_Lon` decimal(10,7) DEFAULT NULL,
+  `OpenAddresses_Lat` decimal(10,7) DEFAULT NULL,
+  `OpenAddresses_Number` varchar(50) DEFAULT NULL,
+  `OpenAddresses_Street` varchar(255) DEFAULT NULL,
+  `OpenAddresses_Unit` varchar(100) DEFAULT NULL,
+  `OpenAddresses_City` varchar(150) DEFAULT NULL,
+  `OpenAddresses_District` varchar(150) DEFAULT NULL,
+  `OpenAddresses_Region` varchar(50) DEFAULT NULL,
+  `OpenAddresses_Postcode` varchar(20) DEFAULT NULL,
+  `OpenAddresses_OA_ID` varchar(100) DEFAULT NULL,
+  `OpenAddresses_OA_hash` varchar(100) DEFAULT NULL,
+  `OpenAddresses_FullAddress` varchar(600) GENERATED ALWAYS AS (trim(concat_ws(_utf8mb4' ',`OpenAddresses_Number`,`OpenAddresses_Street`,`OpenAddresses_Unit`,`OpenAddresses_City`,`OpenAddresses_Region`,`OpenAddresses_Postcode`))) STORED,
+  PRIMARY KEY (`OpenAddresses_ID`),
+  KEY `OpenAddresses_Postcode_IDX` (`OpenAddresses_Postcode`),
+  KEY `OpenAddresses_City_Street_IDX` (`OpenAddresses_City`,`OpenAddresses_Street`),
+  KEY `OpenAddresses_Region_IDX` (`OpenAddresses_Region`),
+  FULLTEXT KEY `OpenAddresses_FTAddress_IDX` (`OpenAddresses_FullAddress`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `PublicProfile`
+--
+
+DROP TABLE IF EXISTS `PublicProfile`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `PublicProfile` (
+  `PublicProfile_ID` int unsigned NOT NULL AUTO_INCREMENT,
+  `CandidateProfile_ID` int unsigned DEFAULT NULL,
+  `Candidate_ID` int unsigned DEFAULT NULL,
+  `PublicProfile_NotOnBallot` enum('yes','no') DEFAULT NULL,
+  `PublicProfile_Elected` enum('yes','no') DEFAULT NULL,
+  `PublicProfile_PublishProfile` enum('yes','no') DEFAULT 'no',
+  `PublicProfile_LastModified` datetime DEFAULT NULL,
+  PRIMARY KEY (`PublicProfile_ID`),
+  KEY `CandidateProfile_Candidate_ID_IDX` (`Candidate_ID`),
+  KEY `CandidateProfile_ID_IDX` (`CandidateProfile_ID`),
+  KEY `PublicProfile_PublicProfile_IDX` (`PublicProfile_PublishProfile`)
+) ENGINE=InnoDB AUTO_INCREMENT=12156 DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `PublicTeam`
+--
+
+DROP TABLE IF EXISTS `PublicTeam`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `PublicTeam` (
+  `PublicTeam_ID` int unsigned NOT NULL AUTO_INCREMENT,
+  `Team_ID` int unsigned DEFAULT NULL,
+  `PublicProfile_ID` int unsigned NOT NULL,
+  PRIMARY KEY (`PublicTeam_ID`),
+  KEY `PublicTeam_Team_ID_IDX` (`Team_ID`),
+  KEY `PublicTeam_PublicProfile_ID_IDX` (`PublicProfile_ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `SearchCandidates`
+--
+
+DROP TABLE IF EXISTS `SearchCandidates`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `SearchCandidates` (
+  `SearchCandidates_ID` int unsigned NOT NULL AUTO_INCREMENT,
+  `Candidate_ID` int unsigned NOT NULL,
+  `PublicProfile_ID` int unsigned DEFAULT NULL,
+  `SearchCandidates_Name` varchar(512) NOT NULL,
+  `SearchCandidates_NameClean` varchar(512) NOT NULL,
+  PRIMARY KEY (`SearchCandidates_ID`),
+  KEY `SearchCandidates_Candidate_ID_IDX` (`Candidate_ID`),
+  KEY `SearchCandidates_PublicProfile_ID_IDX` (`PublicProfile_ID`),
+  FULLTEXT KEY `SearchCandidates_NameClean_FT` (`SearchCandidates_NameClean`)
+) ENGINE=InnoDB AUTO_INCREMENT=12146 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `SurveyPresDelInfo`
+--
+
+DROP TABLE IF EXISTS `SurveyPresDelInfo`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `SurveyPresDelInfo` (
+  `SurveyPresDelInfo_ID` int unsigned NOT NULL AUTO_INCREMENT,
+  `Candidate_ID` int unsigned NOT NULL,
+  `SurveyPresDelInfo_StateName` varchar(256) DEFAULT NULL,
+  `SurveyPresDelInfo_StateCode` char(2) DEFAULT NULL,
+  `SurveyPresDelInfo_Party` char(4) DEFAULT NULL,
+  `SurveyPresDelInfo_TotalDelegate` smallint unsigned DEFAULT NULL,
+  `SurveyPresDelInfo_DraftCandidateTotal` smallint unsigned DEFAULT NULL,
+  `SurveyPresDelInfo_LastDaySwitchParty` date DEFAULT NULL,
+  PRIMARY KEY (`SurveyPresDelInfo_ID`),
+  KEY `SurveyPresDelInfo_PartyCandidate_IDX` (`SurveyPresDelInfo_Party`,`Candidate_ID`),
+  KEY `SurveyPresDelInfo_Candidate_IDX` (`Candidate_ID`)
+) ENGINE=InnoDB AUTO_INCREMENT=200 DEFAULT CHARSET=latin1 KEY_BLOCK_SIZE=8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `SurveyPresDocuments`
+--
+
+DROP TABLE IF EXISTS `SurveyPresDocuments`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `SurveyPresDocuments` (
+  `SurveyPresDocuments_ID` int unsigned NOT NULL AUTO_INCREMENT,
+  `SurveyPresDocuments_Party` char(3) DEFAULT NULL,
+  `SurveyPresDocuments_StateCode` char(2) DEFAULT NULL,
+  `SurveyPresDocuments_RMBURL` varchar(256) DEFAULT NULL,
+  `SurveyPresDocuments_PartyURL` varchar(256) DEFAULT NULL,
+  `SurveyPresDocuments_TotalSigs` smallint unsigned DEFAULT NULL,
+  PRIMARY KEY (`SurveyPresDocuments_ID`),
+  KEY `SurveyPresDocuments_PartyCandidate_IDX` (`SurveyPresDocuments_Party`,`SurveyPresDocuments_StateCode`)
+) ENGINE=InnoDB AUTO_INCREMENT=51 DEFAULT CHARSET=latin1 KEY_BLOCK_SIZE=8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `SurveyPresUser`
+--
+
+DROP TABLE IF EXISTS `SurveyPresUser`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `SurveyPresUser` (
+  `SurveyPresUser_ID` int unsigned NOT NULL AUTO_INCREMENT,
+  `SurveyPresUser_RandomKey` char(12) DEFAULT NULL,
+  `Candidate_ID` int unsigned DEFAULT NULL,
+  `SurveyPresUser_State` char(3) DEFAULT NULL,
+  `SurveyPresUser_FirstName` varchar(100) DEFAULT NULL,
+  `SurveyPresUser_LastName` varchar(100) DEFAULT NULL,
+  `SurveyPresUser_County` varchar(100) DEFAULT NULL,
+  `SurveyPresUser_ZipCode` varchar(50) DEFAULT NULL,
+  `SurveyPresUser_PartisanPartyCounty` enum('yes','no') DEFAULT NULL,
+  `SurveyPresUser_PartisanClubMember` enum('yes','no') DEFAULT NULL,
+  `SurveyPresUser_PartisanRanForOffice` enum('yes','no') DEFAULT NULL,
+  `SurveyPresUser_PartisanElectedToOffice` enum('yes','no') DEFAULT NULL,
+  `SurveyPresUser_PartisanNever` enum('yes','no') DEFAULT NULL,
+  `SurveyPresUser_DelegateStatusCandDelegate` enum('yes','no') DEFAULT NULL,
+  `SurveyPresUser_DelegateStatusWouldloveToBe` enum('yes','no') DEFAULT NULL,
+  `SurveyPresUser_DelegateStatusVolunteerFor` enum('yes','no') DEFAULT NULL,
+  `SurveyPresUser_DelegateStatusTimeToRead` enum('yes','no') DEFAULT NULL,
+  `SurveyPresUser_DelegateStatusWasDelegate` enum('yes','no') DEFAULT NULL,
+  `SurveyPresUser_AffirmativeAfricanAmerican` enum('yes','no') DEFAULT NULL,
+  `SurveyPresUser_AffirmativeHispanic` enum('yes','no') DEFAULT NULL,
+  `SurveyPresUser_AffirmativeAsianPacific` enum('yes','no') DEFAULT NULL,
+  `SurveyPresUser_AffirmativeNativeAmerican` enum('yes','no') DEFAULT NULL,
+  `SurveyPresUser_AffirmativeDisability` enum('yes','no') DEFAULT NULL,
+  `SurveyPresUser_AffirmativeLGBT` enum('yes','no') DEFAULT NULL,
+  `SurveyPresUser_AffirmativeYouth` enum('yes','no') DEFAULT NULL,
+  `SurveyPresUser_Age` tinyint unsigned DEFAULT NULL,
+  `SurveyPresUser_IP` varchar(40) DEFAULT NULL,
+  `SurveyPresUser_DateTime` datetime DEFAULT NULL,
+  PRIMARY KEY (`SurveyPresUser_ID`),
+  KEY `SurveyPresUser_RandomKey_IDX` (`SurveyPresUser_RandomKey`)
+) ENGINE=InnoDB AUTO_INCREMENT=268 DEFAULT CHARSET=latin1 KEY_BLOCK_SIZE=8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `SystemAPI`
+--
+
+DROP TABLE IF EXISTS `SystemAPI`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `SystemAPI` (
+  `SystemAPI_ID` int unsigned NOT NULL AUTO_INCREMENT,
+  `Candidate_ID` int unsigned DEFAULT NULL,
+  `SystemAPI_Txt` varchar(256) DEFAULT NULL,
+  `SystemUser_createtime` datetime DEFAULT NULL,
+  PRIMARY KEY (`SystemAPI_ID`),
+  KEY `SystemAPI_Txt_IDX` (`SystemAPI_Txt`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -717,7 +1222,7 @@ CREATE TABLE `SystemStats` (
   `SystemStats_VoterConverted` mediumint unsigned DEFAULT NULL,
   `SystemStats_SelfCandidates` mediumint unsigned DEFAULT NULL,
   PRIMARY KEY (`SystemStats_ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=89 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=89 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -734,6 +1239,7 @@ CREATE TABLE `SystemUser` (
   `Voters_UniqStateVoterID` varchar(50) DEFAULT NULL,
   `SystemUser_EDAD` int DEFAULT NULL,
   `SystemUser_NumVoters` smallint DEFAULT NULL,
+  `SystemUser_StateAbbrev` char(2) DEFAULT NULL,
   `SystemUser_Party` char(3) DEFAULT NULL,
   `SystemUser_ComplexMenu` enum('yes','no') DEFAULT 'no',
   `SystemUser_email` varchar(256) DEFAULT NULL,
@@ -762,7 +1268,7 @@ CREATE TABLE `SystemUser` (
   KEY `SystemUser_UniqID_IDX` (`Voters_UniqStateVoterID`),
   KEY `SystemUser_username_IDX` (`SystemUser_username`),
   KEY `SystemUser_mobilephone_IDX` (`SystemUser_mobilephone`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1 ROW_FORMAT=COMPRESSED KEY_BLOCK_SIZE=8;
+) ENGINE=InnoDB AUTO_INCREMENT=243 DEFAULT CHARSET=latin1 ROW_FORMAT=COMPRESSED KEY_BLOCK_SIZE=8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -778,13 +1284,17 @@ CREATE TABLE `SystemUserEmail` (
   `SystemUserEmail_AddTo` varchar(256) DEFAULT NULL,
   `SystemUserEmail_MailCode` char(10) DEFAULT NULL,
   `SystemUserEmail_Reason` varchar(256) DEFAULT NULL,
+  `SystemUserEmail_RefMailCode` char(10) DEFAULT NULL,
+  `SystemUserEmail_WebCode` varchar(20) DEFAULT NULL,
   `SystemUserEmail_Concluded` enum('yes','no') DEFAULT NULL,
   `SystemUser_ID` int unsigned DEFAULT NULL,
   `SystemUserEmail_Received` datetime DEFAULT NULL,
   PRIMARY KEY (`SystemUserEmail_ID`),
   KEY `SystemUserEmail_AddTo_IDX` (`SystemUserEmail_AddTo`),
-  KEY `SystemUserEmail_MailCode_IDX` (`SystemUserEmail_MailCode`)
-) ENGINE=InnoDB AUTO_INCREMENT=131 DEFAULT CHARSET=latin1 ROW_FORMAT=COMPRESSED KEY_BLOCK_SIZE=8;
+  KEY `SystemUserEmail_MailCode_IDX` (`SystemUserEmail_MailCode`),
+  KEY `SystemUserEmail_RefMailCode_IDX` (`SystemUserEmail_Reason`),
+  KEY `SystemUserEmail_WebCode_IDX` (`SystemUserEmail_WebCode`)
+) ENGINE=InnoDB AUTO_INCREMENT=48255 DEFAULT CHARSET=latin1 ROW_FORMAT=COMPRESSED KEY_BLOCK_SIZE=8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -813,7 +1323,7 @@ CREATE TABLE `SystemUserProfile` (
   `SystemUserProfile_URL` varchar(256) DEFAULT NULL,
   `SystemUserProfile_Location` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`SystemUserProfile_ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=50 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -830,11 +1340,14 @@ CREATE TABLE `SystemUserQuery` (
   `SystemUserQuery_DateOfBirth` date DEFAULT NULL,
   `SystemUserQuery_DatedFileID` int unsigned DEFAULT NULL,
   `SystemUserQuery_Email` varchar(255) DEFAULT NULL,
+  `SystemUserQuery_Contact` varchar(255) DEFAULT NULL,
+  `SystemUserQuery_BrandingGroup` varchar(100) DEFAULT NULL,
   `SystemUserQuery_UniqNYSVoterID` char(20) DEFAULT NULL,
   `SystemUserQuery_IP` varchar(100) DEFAULT NULL,
   `SystemUserQuery_Date` datetime DEFAULT NULL,
-  PRIMARY KEY (`SystemUserQuery_ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=30 DEFAULT CHARSET=latin1;
+  PRIMARY KEY (`SystemUserQuery_ID`),
+  KEY `SystemUserQuery_BrandingGroup_IDX` (`SystemUserQuery_BrandingGroup`)
+) ENGINE=InnoDB AUTO_INCREMENT=198 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -851,8 +1364,33 @@ CREATE TABLE `SystemUserSelfDistrict` (
   `SystemUserSelfDistrict_ED` int DEFAULT NULL,
   `SystemUserSelfDistrict_CG` int DEFAULT NULL,
   `SystemUserSelfDistrict_SN` int DEFAULT NULL,
-  PRIMARY KEY (`SystemUserSelfDistrict_ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1 ROW_FORMAT=COMPRESSED KEY_BLOCK_SIZE=8;
+  PRIMARY KEY (`SystemUserSelfDistrict_ID`),
+  KEY `SystemUserSelfDistrict_SystemUser_IDX` (`SystemUser_ID`)
+) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=latin1 ROW_FORMAT=COMPRESSED KEY_BLOCK_SIZE=8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `SystemUserTeamPending`
+--
+
+DROP TABLE IF EXISTS `SystemUserTeamPending`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `SystemUserTeamPending` (
+  `SystemUserTeamPending_ID` int unsigned NOT NULL AUTO_INCREMENT,
+  `SystemUserTeamPending_email` varchar(256) DEFAULT NULL,
+  `Team_ID` int unsigned DEFAULT NULL,
+  `SystemUserTeamPending_FullAdmin` enum('yes','no') DEFAULT 'no',
+  `SystemUserTeamPending_AdminCode` int unsigned DEFAULT NULL,
+  `SystemUserTeamPending_Valid` enum('yes','no') DEFAULT 'no',
+  `SystemUserTeamPending_GivenSysUsr` int unsigned NOT NULL,
+  `SystemUserTeamPending_Given` datetime DEFAULT NULL,
+  `SystemUserTeamPending_RvkSysUsr` int unsigned DEFAULT NULL,
+  `SystemUserTeamPending_Rvk` datetime DEFAULT NULL,
+  `SystemUserTeamPending_Tampon` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`SystemUserTeamPending_ID`),
+  KEY `SystemUserTeamPending_email_IDX` (`SystemUserTeamPending_email`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -879,7 +1417,20 @@ CREATE TABLE `SystemUserTemporary` (
   KEY `SystemUserTemporary_emaill_IDX` (`SystemUserTemporary_email`),
   KEY `SystemUserTemporary_emaillinkid_IDX` (`SystemUserTemporary_emaillinkid`),
   KEY `SystemUserTemporary_username_IDX` (`SystemUserTemporary_username`)
-) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=288 DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `SystemUserTemporaryLastLogin`
+--
+
+DROP TABLE IF EXISTS `SystemUserTemporaryLastLogin`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `SystemUserTemporaryLastLogin` (
+  `SystemUserTemporary_ID` int unsigned DEFAULT NULL,
+  `SystemUserTemporaryLastLogin` datetime DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -914,15 +1465,21 @@ DROP TABLE IF EXISTS `Team`;
 CREATE TABLE `Team` (
   `Team_ID` int unsigned NOT NULL AUTO_INCREMENT,
   `SystemUser_ID` int unsigned DEFAULT NULL,
+  `TeamNGO_ID` int unsigned DEFAULT NULL,
   `Team_Name` varchar(256) DEFAULT NULL,
   `Team_AccessCode` varchar(256) DEFAULT NULL,
   `Team_WebCode` varchar(20) DEFAULT NULL,
+  `Team_EmailCode` varchar(255) DEFAULT NULL,
+  `ElectionsPosition_ID` int unsigned DEFAULT NULL,
+  `Team_URLRedirect` varchar(100) DEFAULT NULL,
   `Team_Active` enum('yes','no') DEFAULT NULL,
   `Team_Public` enum('public','private') DEFAULT NULL,
   `Team_Created` datetime DEFAULT NULL,
   PRIMARY KEY (`Team_ID`),
-  KEY `Team_AccessCode_IDX` (`Team_AccessCode`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
+  KEY `Team_AccessCode_IDX` (`Team_AccessCode`),
+  KEY `Team_Webcode_IDX` (`Team_WebCode`),
+  KEY `Team_EmailCode_IDX` (`Team_EmailCode`)
+) ENGINE=InnoDB AUTO_INCREMENT=122 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -940,7 +1497,7 @@ CREATE TABLE `TeamCandidates` (
   PRIMARY KEY (`TeamCandidates_ID`),
   KEY `TeamCandidates_Candidate_IDX` (`Candidate_ID`),
   KEY `TeamCandidates_Team_IDX` (`Team_ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -954,7 +1511,7 @@ CREATE TABLE `TeamMember` (
   `TeamMember_ID` int unsigned NOT NULL AUTO_INCREMENT,
   `SystemUser_ID` int unsigned DEFAULT NULL,
   `Team_ID` int unsigned DEFAULT NULL,
-  `TeamMember_Active` enum('yes','no','pending') DEFAULT NULL,
+  `TeamMember_Active` enum('yes','no','pending','declined','banned','requested','refused','other') DEFAULT NULL,
   `TeamMember_Privs` int unsigned DEFAULT NULL,
   `TeamMember_ApprovedBy` int unsigned DEFAULT NULL,
   `TeamMember_ApprovedNote` varchar(256) DEFAULT NULL,
@@ -962,8 +1519,126 @@ CREATE TABLE `TeamMember` (
   `TeamMember_RemovedBy` int unsigned DEFAULT NULL,
   `TeamMember_RemovedNote` varchar(256) DEFAULT NULL,
   `TeamMember_RemovedDate` datetime DEFAULT NULL,
+  `TeamMember_DateRequest` datetime DEFAULT NULL,
   PRIMARY KEY (`TeamMember_ID`),
   KEY `TeamMember_SysTeam_IDX` (`SystemUser_ID`,`Team_ID`)
+) ENGINE=InnoDB AUTO_INCREMENT=156 DEFAULT CHARSET=latin1 ROW_FORMAT=COMPRESSED KEY_BLOCK_SIZE=8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `TeamMemberAssign`
+--
+
+DROP TABLE IF EXISTS `TeamMemberAssign`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `TeamMemberAssign` (
+  `TeamMemberAssign_ID` int unsigned NOT NULL AUTO_INCREMENT,
+  `SystemUser_ID` int unsigned DEFAULT NULL,
+  `Team_ID` int unsigned DEFAULT NULL,
+  `TeamMemberAssign_Email` int unsigned DEFAULT NULL,
+  `TeamMemberAssign_Used` enum('yes','no','pending','declined') COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `TeamMemberAssign_Privs` int unsigned DEFAULT NULL,
+  `TeamMemberAssign_Added` datetime DEFAULT NULL,
+  `TeamMemberAssign_Claimed` datetime DEFAULT NULL,
+  `TeamMemberAssign_RemovedDate` datetime DEFAULT NULL,
+  `TeamMemberAssign_RemovedBy` int unsigned DEFAULT NULL,
+  `TeamMemberAssign_RemovedNote` varchar(256) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  PRIMARY KEY (`TeamMemberAssign_ID`),
+  KEY `TeamMemberAssign_Email_IDX` (`TeamMemberAssign_Email`),
+  KEY `TeamMemberAssign_Team_ID_IDX` (`Team_ID`),
+  KEY `TeamMemberAssign_SystemUser_ID_IDX` (`SystemUser_ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=COMPRESSED KEY_BLOCK_SIZE=8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `TeamNGO`
+--
+
+DROP TABLE IF EXISTS `TeamNGO`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `TeamNGO` (
+  `TeamNGO_ID` int unsigned NOT NULL AUTO_INCREMENT,
+  `TeamNGO_Name` varchar(256) DEFAULT NULL,
+  `TeamNGO_TaxType` varchar(256) DEFAULT NULL,
+  `TeamNGO_GovID` varchar(256) DEFAULT NULL,
+  `TeamNGO_Website` varchar(256) DEFAULT NULL,
+  PRIMARY KEY (`TeamNGO_ID`),
+  KEY `TeamNGO_Name_IDX` (`TeamNGO_Name`),
+  KEY `TeamNGO_TaxType_IDX` (`TeamNGO_TaxType`),
+  KEY `TeamNGO_GovID_IDX` (`TeamNGO_GovID`)
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci ROW_FORMAT=COMPRESSED KEY_BLOCK_SIZE=8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `TeamNGOEnd`
+--
+
+DROP TABLE IF EXISTS `TeamNGOEnd`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `TeamNGOEnd` (
+  `TeamNGOEnd_ID` int unsigned NOT NULL AUTO_INCREMENT,
+  `TeamNGO_ID` int unsigned DEFAULT NULL,
+  `TeamNGOEnd_Major` enum('major','minor','local','support','other') DEFAULT NULL,
+  `DataInter_ID` int unsigned DEFAULT NULL,
+  `TeamNGOEnd_Type` enum('none','single','multiple') DEFAULT NULL,
+  `TeamNGOEnd_Method` enum('number','letter') DEFAULT NULL,
+  `TeamNGOEnd_Star` tinyint DEFAULT NULL,
+  `TeamNGOEnd_End` tinyint DEFAULT NULL,
+  `TeamNGOEnd_LetterSigned` enum('yes','no') DEFAULT NULL,
+  `TeamNGOEnd_NumberPercent` enum('yes','no') DEFAULT NULL,
+  `TeamNGOEnd_ContactIn` enum('yes','no') DEFAULT NULL,
+  `TeamNGOEnd_ContactOut` enum('yes','no') DEFAULT NULL,
+  `TeamNGOEnd_QuestionairePath` varchar(255) DEFAULT NULL,
+  `TeamNGOEnd_LogoPath` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`TeamNGOEnd_ID`),
+  KEY `TeamNGOEnd_TeamNGO_ID_IDX` (`TeamNGO_ID`)
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci ROW_FORMAT=COMPRESSED KEY_BLOCK_SIZE=8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `TeamNGOPublic`
+--
+
+DROP TABLE IF EXISTS `TeamNGOPublic`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `TeamNGOPublic` (
+  `TeamNGOPublic_ID` int unsigned NOT NULL AUTO_INCREMENT,
+  `TeamNGOEnd_ID` int unsigned DEFAULT NULL,
+  `PublicProfile_ID` int unsigned DEFAULT NULL,
+  `TeamNGOPublic_CanAcceptDate` datetime DEFAULT NULL,
+  `TeamNGOPublic_NGOAcceptDate` datetime DEFAULT NULL,
+  `TeanNGOPublic_Rating` tinyint DEFAULT NULL,
+  `TeanNGOPublic_Publish` enum('yes','no') DEFAULT NULL,
+  `TeanNGOPublic_Date` datetime DEFAULT NULL,
+  PRIMARY KEY (`TeamNGOPublic_ID`),
+  KEY `TeamNGOPublic_TeamPublic_IDX` (`TeamNGOEnd_ID`,`PublicProfile_ID`),
+  KEY `TeamNGOPublic_TeamNGOID_ID_IDX` (`TeamNGOEnd_ID`),
+  KEY `TeamNGOPublic_PublicProfile_ID_IDX` (`PublicProfile_ID`)
+) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci ROW_FORMAT=COMPRESSED KEY_BLOCK_SIZE=8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `Vendor`
+--
+
+DROP TABLE IF EXISTS `Vendor`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `Vendor` (
+  `Vendor_ID` int unsigned NOT NULL AUTO_INCREMENT,
+  `SystemUser_ID` int unsigned DEFAULT NULL,
+  `Vendor_Order` int unsigned DEFAULT NULL,
+  `Vendor_Name` varchar(255) DEFAULT NULL,
+  `Vendor_Pitch` text,
+  `Vendor_URL` varchar(255) DEFAULT NULL,
+  `Vendor_Stage` enum('presave','visible') DEFAULT NULL,
+  `Vendor_Visible` enum('yes','no') DEFAULT NULL,
+  `Vendor_UpdateTime` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`Vendor_ID`)
 ) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=latin1 ROW_FORMAT=COMPRESSED KEY_BLOCK_SIZE=8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -977,37 +1652,57 @@ DROP TABLE IF EXISTS `Voters`;
 CREATE TABLE `Voters` (
   `Voters_ID` int unsigned NOT NULL AUTO_INCREMENT,
   `VotersIndexes_ID` int unsigned DEFAULT NULL,
-  `ElectionsDistricts_DBTable` varchar(256) DEFAULT NULL,
-  `ElectionsDistricts_DBTableValue` varchar(256) DEFAULT NULL,
   `DataHouse_ID` int unsigned DEFAULT NULL,
-  `Voters_Gender` enum('male','female','other','undetermined') DEFAULT NULL,
-  `VotersComplementInfo_ID` int unsigned DEFAULT NULL,
+  `Voters_Gender` enum('male','female','other','undetermined','intersex','Undisclosed') DEFAULT NULL,
   `Voters_UniqStateVoterID` varchar(50) DEFAULT NULL,
-  `DataState_ID` tinyint unsigned DEFAULT NULL,
+  `DataState_ID` int unsigned DEFAULT NULL,
   `Voters_RegParty` char(3) DEFAULT NULL,
-  `Voters_ReasonCode` enum('AdjudgedIncompetent','Death','Duplicate','Felon','MailCheck','MouvedOutCounty','NCOA','NVRA','ReturnMail','VoterRequest','Other','Court','Inactive') DEFAULT NULL,
+  `Voters_ReasonCode` enum('AdjudgedIncompetent','Death','Duplicate','Felon','MailCheck','MovedOutCounty','NCOA','NVRA','ReturnMail','VoterRequest','Other','Court','Inactive') DEFAULT NULL,
   `Voters_Status` enum('Active','ActiveMilitary','ActiveSpecialFederal','ActiveSpecialPresidential','ActiveUOCAVA','Inactive','Purged','Prereg17YearOlds','Confirmation') DEFAULT NULL,
   `VotersMailingAddress_ID` int unsigned DEFAULT NULL,
   `Voters_IDRequired` enum('yes','no') DEFAULT NULL,
   `Voters_IDMet` enum('yes','no') DEFAULT NULL,
   `Voters_ApplyDate` date DEFAULT NULL,
-  `Voters_RegSource` enum('Agency','CBOE','DMV','LocalRegistrar','MailIn','School') DEFAULT NULL,
+  `Voters_RegSource` enum('Agency','CBOE','DMV','LocalRegistrar','MailIn','School','OVR') DEFAULT NULL,
   `Voters_DateInactive` date DEFAULT NULL,
   `Voters_DatePurged` date DEFAULT NULL,
   `Voters_CountyVoterNumber` varchar(50) DEFAULT NULL,
+  `Voters_RMBActive` enum('yes','no') DEFAULT 'yes',
   `Voters_RecFirstSeen` date DEFAULT NULL,
   `Voters_RecLastSeen` date DEFAULT NULL,
   PRIMARY KEY (`Voters_ID`),
   KEY `Voters_UniqStateVoterID_IDX` (`Voters_UniqStateVoterID`),
-  KEY `Voters_ID_IDX` (`Voters_ID`),
   KEY `Voters_RegParty_IDX` (`Voters_RegParty`),
-  KEY `Voters_StatusRegParty_IDX` (`Voters_Status`,`Voters_RegParty`),
   KEY `Voters_Status_IDX` (`Voters_Status`),
-  KEY `Voters_DataState_IDX` (`DataState_ID`),
+  KEY `Voters_StatusRegParty_IDX` (`Voters_Status`,`Voters_RegParty`),
   KEY `VotersIndexesID_IDX` (`VotersIndexes_ID`),
-  KEY `Voters_DBTables_IDX` (`ElectionsDistricts_DBTable`,`ElectionsDistricts_DBTableValue`),
-  KEY `Voters_DataHouseID_IDX` (`DataHouse_ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=20775836 DEFAULT CHARSET=latin1 ROW_FORMAT=COMPRESSED KEY_BLOCK_SIZE=8;
+  KEY `Voters_DataHouseID_IDX` (`DataHouse_ID`),
+  KEY `Voters_DataState_IDX` (`DataState_ID`),
+  KEY `Voters_CountyVoterNumber_IDX` (`Voters_CountyVoterNumber`),
+  KEY `Voters_RecFirstSeen_IDX` (`Voters_RecFirstSeen`),
+  KEY `Voters_RecLastSeen_IDX` (`Voters_RecLastSeen`)
+) ENGINE=InnoDB AUTO_INCREMENT=34792547 DEFAULT CHARSET=latin1 ROW_FORMAT=COMPRESSED KEY_BLOCK_SIZE=8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `VotersComplementInfo`
+--
+
+DROP TABLE IF EXISTS `VotersComplementInfo`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `VotersComplementInfo` (
+  `VotersComplementInfo_ID` int unsigned NOT NULL AUTO_INCREMENT,
+  `Voters_ID` int unsigned DEFAULT NULL,
+  `VotersComplementInfo_PrevName` varchar(150) DEFAULT NULL,
+  `VotersComplementInfo_PrevAddress` varchar(100) DEFAULT NULL,
+  `DataCountyID_PrevCounty` int unsigned DEFAULT NULL,
+  `VotersComplementInfo_LastYearVoted` year DEFAULT NULL,
+  `VotersComplementInfo_LastDateVoted` date DEFAULT NULL,
+  `VotersComplementInfo_OtherParty` varchar(100) DEFAULT NULL,
+  PRIMARY KEY (`VotersComplementInfo_ID`),
+  KEY `VotersComplementInfo_ALL_IDX` (`VotersComplementInfo_PrevName`,`VotersComplementInfo_PrevAddress`,`VotersComplementInfo_LastYearVoted`,`VotersComplementInfo_OtherParty`)
+) ENGINE=InnoDB AUTO_INCREMENT=35029540 DEFAULT CHARSET=latin1 ROW_FORMAT=COMPRESSED KEY_BLOCK_SIZE=8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1019,95 +1714,21 @@ DROP TABLE IF EXISTS `VotersIndexes`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `VotersIndexes` (
   `VotersIndexes_ID` int unsigned NOT NULL AUTO_INCREMENT,
-  `DataState_ID` tinyint unsigned DEFAULT NULL,
   `DataLastName_ID` int unsigned DEFAULT NULL,
   `DataFirstName_ID` int unsigned DEFAULT NULL,
   `DataMiddleName_ID` int unsigned DEFAULT NULL,
   `VotersIndexes_Suffix` varchar(10) DEFAULT NULL,
   `VotersIndexes_DOB` date DEFAULT NULL,
+  `DataState_ID` int unsigned DEFAULT NULL,
   `VotersIndexes_UniqStateVoterID` char(20) DEFAULT NULL,
   PRIMARY KEY (`VotersIndexes_ID`),
   KEY `VotersIndexes_UniqStateVoterID_IDX` (`VotersIndexes_UniqStateVoterID`),
   KEY `VotersIndexes_DataFirstName_IDX` (`DataFirstName_ID`),
   KEY `VotersIndexes_DataMiddleName_IDX` (`DataMiddleName_ID`),
   KEY `VotersIndexes_DataLastName_IDX` (`DataLastName_ID`),
-  KEY `VotersIndexes_DOB_IDX` (`VotersIndexes_DOB`)
-) ENGINE=InnoDB AUTO_INCREMENT=20774300 DEFAULT CHARSET=latin1 ROW_FORMAT=COMPRESSED KEY_BLOCK_SIZE=8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `VotersRaw_NYS`
---
-
-DROP TABLE IF EXISTS `VotersRaw_NYS`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `VotersRaw_NYS` (
-  `NY_Raw_ID` int unsigned NOT NULL AUTO_INCREMENT,
-  `LastName` varchar(50) DEFAULT NULL,
-  `FirstName` varchar(50) DEFAULT NULL,
-  `MiddleName` varchar(50) DEFAULT NULL,
-  `Suffix` varchar(10) DEFAULT NULL,
-  `ResHouseNumber` varchar(10) DEFAULT NULL,
-  `ResFracAddress` varchar(10) DEFAULT NULL,
-  `ResPreStreet` varchar(10) DEFAULT NULL,
-  `ResStreetName` varchar(70) DEFAULT NULL,
-  `ResPostStDir` varchar(10) DEFAULT NULL,
-  `ResType` varchar(10) DEFAULT NULL,
-  `ResApartment` varchar(15) DEFAULT NULL,
-  `ResNonStdFormat` varchar(250) DEFAULT NULL,
-  `ResCity` varchar(50) DEFAULT NULL,
-  `ResZip` char(5) DEFAULT NULL,
-  `ResZip4` char(4) DEFAULT NULL,
-  `ResMail1` varchar(100) DEFAULT NULL,
-  `ResMail2` varchar(100) DEFAULT NULL,
-  `ResMail3` varchar(100) DEFAULT NULL,
-  `ResMail4` varchar(100) DEFAULT NULL,
-  `DOB` char(8) DEFAULT NULL,
-  `Gender` char(1) DEFAULT NULL,
-  `EnrollPolParty` char(3) DEFAULT NULL,
-  `OtherParty` varchar(30) DEFAULT NULL,
-  `CountyCode` char(2) DEFAULT NULL,
-  `ElectDistr` char(3) DEFAULT NULL,
-  `LegisDistr` char(3) DEFAULT NULL,
-  `TownCity` varchar(30) DEFAULT NULL,
-  `Ward` char(3) DEFAULT NULL,
-  `CongressDistr` char(3) DEFAULT NULL,
-  `SenateDistr` char(3) DEFAULT NULL,
-  `AssemblyDistr` char(3) DEFAULT NULL,
-  `LastDateVoted` char(8) DEFAULT NULL,
-  `PrevYearVoted` varchar(4) DEFAULT NULL,
-  `PrevCounty` char(2) DEFAULT NULL,
-  `PrevAddress` varchar(100) DEFAULT NULL,
-  `PrevName` varchar(150) DEFAULT NULL,
-  `CountyVoterNumber` varchar(50) DEFAULT NULL,
-  `RegistrationCharacter` char(8) DEFAULT NULL,
-  `ApplicationSource` varchar(10) DEFAULT NULL,
-  `IDRequired` char(1) DEFAULT NULL,
-  `IDMet` char(1) DEFAULT NULL,
-  `Status` varchar(10) DEFAULT NULL,
-  `ReasonCode` varchar(15) DEFAULT NULL,
-  `VoterMadeInactive` char(8) DEFAULT NULL,
-  `VoterPurged` char(8) DEFAULT NULL,
-  `UniqNYSVoterID` varchar(50) DEFAULT NULL,
-  `VoterHistory` text,
-  PRIMARY KEY (`NY_Raw_ID`),
-  KEY `NY_Raw_20220305_LastName_IDX` (`LastName`),
-  KEY `NY_Raw_20220305_UniqNYSVoterID_IDX` (`UniqNYSVoterID`),
-  KEY `NY_Raw_20220305_Voter_CountyCode_IDX` (`CountyCode`),
-  KEY `NY_Raw_20220305_Voter_ADED_IDX` (`AssemblyDistr`,`ElectDistr`),
-  KEY `NY_Raw_20220305_LastName_DOB_IDX` (`LastName`,`DOB`),
-  KEY `NY_Raw_20220305_AD_ED_Party_Status_IDX` (`AssemblyDistr`,`ElectDistr`,`EnrollPolParty`,`Status`),
-  KEY `VotersRaw_NY_ElectDistr_IDX` (`ElectDistr`),
-  KEY `VotersRaw_NY_ADED_IDX` (`AssemblyDistr`,`ElectDistr`),
-  KEY `VotersRaw_NY_LastFisrtName_IDX` (`LastName`,`FirstName`),
-  KEY `VotersRaw_NY_ADEDParty_IDX` (`AssemblyDistr`,`ElectDistr`,`EnrollPolParty`),
-  KEY `VotersRaw_NY_CountyVoterNumber_IDX` (`CountyVoterNumber`),
-  KEY `VotersRaw_NY_SenateDistr_IDX` (`SenateDistr`),
-  KEY `VotersRaw_NY_Zipcode_IDX` (`ResZip`),
-  KEY `VotersRaw_NY_FisrtName_IDX` (`FirstName`),
-  KEY `VotersRaw_StreetName_IDX` (`ResStreetName`)
-) ENGINE=InnoDB AUTO_INCREMENT=20938878 DEFAULT CHARSET=latin1 ROW_FORMAT=COMPRESSED KEY_BLOCK_SIZE=8;
+  KEY `VotersIndexes_DOB_IDX` (`VotersIndexes_DOB`),
+  KEY `VotersIndexes_DataState_IDX` (`DataState_ID`)
+) ENGINE=InnoDB AUTO_INCREMENT=22951771 DEFAULT CHARSET=latin1 ROW_FORMAT=COMPRESSED KEY_BLOCK_SIZE=8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1122,9 +1743,10 @@ CREATE TABLE `ZDevVerif` (
   `ZDevVerif_UserName` varchar(100) DEFAULT NULL,
   `ZDevVerif_Email` varchar(256) DEFAULT NULL,
   `ZDevVerif_HashKey` varchar(100) DEFAULT NULL,
+  `ZDevVerif_MailCode` char(10) DEFAULT NULL,
   `ZDevVerif_Received` datetime DEFAULT NULL,
   PRIMARY KEY (`ZDevVerif_ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 ROW_FORMAT=COMPRESSED KEY_BLOCK_SIZE=8;
+) ENGINE=InnoDB AUTO_INCREMENT=44 DEFAULT CHARSET=latin1 ROW_FORMAT=COMPRESSED KEY_BLOCK_SIZE=8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1158,7 +1780,7 @@ CREATE TABLE `ZeMovieWtchd` (
   `ZeMovieWtchd_Email` varchar(256) DEFAULT NULL,
   `ZeMovieWtchd_Time` datetime DEFAULT NULL,
   PRIMARY KEY (`ZeMovieWtchd_ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -1170,4 +1792,4 @@ CREATE TABLE `ZeMovieWtchd` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-04-25 12:11:54
+-- Dump completed on 2026-07-04 17:34:55

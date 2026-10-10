@@ -2,7 +2,7 @@
 --
 -- Host: localhost    Database: RepMyBlock
 -- ------------------------------------------------------
--- Server version	8.0.46-0ubuntu0.24.04.3
+-- Server version	8.0.46-0ubuntu0.24.04.4
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -122,7 +122,7 @@ CREATE TABLE `Candidate` (
   KEY `Candidate_UniqStateVoterID_IDX` (`Candidate_UniqStateVoterID`),
   KEY `Candidate_Voters_IDX` (`Voters_ID`),
   KEY `CandidateElection_Candidate_ID_IDX` (`CandidateElection_ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=14961 DEFAULT CHARSET=latin1 ROW_FORMAT=COMPRESSED KEY_BLOCK_SIZE=8;
+) ENGINE=InnoDB AUTO_INCREMENT=14962 DEFAULT CHARSET=latin1 ROW_FORMAT=COMPRESSED KEY_BLOCK_SIZE=8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -190,7 +190,7 @@ CREATE TABLE `CandidateElection` (
   PRIMARY KEY (`CandidateElection_ID`),
   KEY `CandidateElectionElectionsPosition_IDX` (`ElectionsPosition_ID`),
   KEY `CandidateElection_DBTableValue_IDX` (`CandidateElection_DBTableValue`)
-) ENGINE=InnoDB AUTO_INCREMENT=19230 DEFAULT CHARSET=latin1 ROW_FORMAT=COMPRESSED KEY_BLOCK_SIZE=8;
+) ENGINE=InnoDB AUTO_INCREMENT=19231 DEFAULT CHARSET=latin1 ROW_FORMAT=COMPRESSED KEY_BLOCK_SIZE=8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -428,9 +428,10 @@ CREATE TABLE `DataCounty` (
   `DataState_ID` int unsigned DEFAULT NULL,
   `DataCounty_Name` varchar(40) DEFAULT NULL,
   `DataCounty_BOEID` int unsigned DEFAULT NULL,
+  `DataCounty_GEOID` mediumint unsigned DEFAULT NULL,
   PRIMARY KEY (`DataCounty_ID`),
   KEY `DataCounty_BOEID_IDX` (`DataCounty_BOEID`)
-) ENGINE=InnoDB AUTO_INCREMENT=151 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=3099 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -579,7 +580,7 @@ CREATE TABLE `DataInter` (
   `DataInter_ValidTo` datetime DEFAULT NULL,
   PRIMARY KEY (`DataInter_ID`),
   KEY `DataInter_DataInter_Name_IDX` (`DataInter_Name`)
-) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -720,6 +721,7 @@ CREATE TABLE `DataState` (
   `DataState_ID` int unsigned NOT NULL AUTO_INCREMENT,
   `DataState_Name` varchar(255) DEFAULT NULL,
   `DataState_Abbrev` char(2) DEFAULT NULL,
+  `DataState_Country` char(2) DEFAULT NULL,
   PRIMARY KEY (`DataState_ID`),
   UNIQUE KEY `DataState_Name` (`DataState_Name`),
   KEY `DataStateName_IDX` (`DataState_Name`),
@@ -1185,7 +1187,7 @@ CREATE TABLE `SurveyPresUser` (
   `SurveyPresUser_DateTime` datetime DEFAULT NULL,
   PRIMARY KEY (`SurveyPresUser_ID`),
   KEY `SurveyPresUser_RandomKey_IDX` (`SurveyPresUser_RandomKey`)
-) ENGINE=InnoDB AUTO_INCREMENT=268 DEFAULT CHARSET=latin1 KEY_BLOCK_SIZE=8;
+) ENGINE=InnoDB AUTO_INCREMENT=278 DEFAULT CHARSET=latin1 KEY_BLOCK_SIZE=8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1268,7 +1270,7 @@ CREATE TABLE `SystemUser` (
   KEY `SystemUser_UniqID_IDX` (`Voters_UniqStateVoterID`),
   KEY `SystemUser_username_IDX` (`SystemUser_username`),
   KEY `SystemUser_mobilephone_IDX` (`SystemUser_mobilephone`)
-) ENGINE=InnoDB AUTO_INCREMENT=243 DEFAULT CHARSET=latin1 ROW_FORMAT=COMPRESSED KEY_BLOCK_SIZE=8;
+) ENGINE=InnoDB AUTO_INCREMENT=247 DEFAULT CHARSET=latin1 ROW_FORMAT=COMPRESSED KEY_BLOCK_SIZE=8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1294,7 +1296,7 @@ CREATE TABLE `SystemUserEmail` (
   KEY `SystemUserEmail_MailCode_IDX` (`SystemUserEmail_MailCode`),
   KEY `SystemUserEmail_RefMailCode_IDX` (`SystemUserEmail_Reason`),
   KEY `SystemUserEmail_WebCode_IDX` (`SystemUserEmail_WebCode`)
-) ENGINE=InnoDB AUTO_INCREMENT=48255 DEFAULT CHARSET=latin1 ROW_FORMAT=COMPRESSED KEY_BLOCK_SIZE=8;
+) ENGINE=InnoDB AUTO_INCREMENT=155 DEFAULT CHARSET=latin1 ROW_FORMAT=COMPRESSED KEY_BLOCK_SIZE=8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1347,7 +1349,7 @@ CREATE TABLE `SystemUserQuery` (
   `SystemUserQuery_Date` datetime DEFAULT NULL,
   PRIMARY KEY (`SystemUserQuery_ID`),
   KEY `SystemUserQuery_BrandingGroup_IDX` (`SystemUserQuery_BrandingGroup`)
-) ENGINE=InnoDB AUTO_INCREMENT=198 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=204 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1417,7 +1419,7 @@ CREATE TABLE `SystemUserTemporary` (
   KEY `SystemUserTemporary_emaill_IDX` (`SystemUserTemporary_email`),
   KEY `SystemUserTemporary_emaillinkid_IDX` (`SystemUserTemporary_emaillinkid`),
   KEY `SystemUserTemporary_username_IDX` (`SystemUserTemporary_username`)
-) ENGINE=InnoDB AUTO_INCREMENT=288 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=293 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1522,7 +1524,7 @@ CREATE TABLE `TeamMember` (
   `TeamMember_DateRequest` datetime DEFAULT NULL,
   PRIMARY KEY (`TeamMember_ID`),
   KEY `TeamMember_SysTeam_IDX` (`SystemUser_ID`,`Team_ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=156 DEFAULT CHARSET=latin1 ROW_FORMAT=COMPRESSED KEY_BLOCK_SIZE=8;
+) ENGINE=InnoDB AUTO_INCREMENT=157 DEFAULT CHARSET=latin1 ROW_FORMAT=COMPRESSED KEY_BLOCK_SIZE=8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1792,4 +1794,4 @@ CREATE TABLE `ZeMovieWtchd` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2026-07-04 17:34:55
+-- Dump completed on 2026-10-10  0:25:11
